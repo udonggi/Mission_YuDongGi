@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: oauth
+    include: oauth // yml 파일을 원하는 만큼 분리하고 한 번에 사용할 수 있다.
     active: dev
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
