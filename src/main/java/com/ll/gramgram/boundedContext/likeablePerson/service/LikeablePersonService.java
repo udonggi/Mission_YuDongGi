@@ -6,6 +6,7 @@ import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
+import com.ll.gramgram.boundedContext.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final InstaMemberService instaMemberService;
+    private final MemberService memberService;
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
@@ -54,12 +56,18 @@ public class LikeablePersonService {
     @Transactional
     public RsData<LikeablePerson> delete(Integer id, Principal principal) {
         Optional<LikeablePerson> person = likeablePersonRepository.findById(id);
+        Optional<Member> member = memberService.findByUsername(principal.getName());
 
         if (person.isEmpty()) {
             return RsData.of("F-1", "해당 호감상대가 존재하지 않습니다.");
         }
 
         LikeablePerson likeablePerson = person.get();
+
+        if(likeablePerson.getFromInstaMember().getId() != member.get().getInstaMember().getId()) {
+            return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
+        }
+
         likeablePersonRepository.delete(likeablePerson);
 
         return RsData.of("S-1", "해당 호감상대가 삭제되었습니다.", likeablePerson);
