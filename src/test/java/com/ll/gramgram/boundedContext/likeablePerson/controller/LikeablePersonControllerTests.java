@@ -149,6 +149,7 @@ public class LikeablePersonControllerTests {
                         """.stripIndent().trim())));
         ;
     }
+
     @Test
     @DisplayName("user3이 user4에게 호감표시(외모)를 삭제한다. (user3이 user4에게 호감표시(외모)를 한 상태)")
     @WithUserDetails("user3")
