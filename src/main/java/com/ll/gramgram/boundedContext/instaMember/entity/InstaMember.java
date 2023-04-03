@@ -31,6 +31,4 @@ public class InstaMember {
     @Setter
     private String gender;
 
-    @OneToOne(mappedBy = "instaMember")
-    private Member member;
 }

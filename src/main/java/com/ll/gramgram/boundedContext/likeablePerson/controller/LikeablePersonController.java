@@ -12,9 +12,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.security.Principal;
 import java.util.List;
 
 @Controller
@@ -58,5 +60,16 @@ public class LikeablePersonController {
         }
 
         return "usr/likeablePerson/list";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable("id")Integer id, Principal principal) {
+        RsData<LikeablePerson> deleteRsData = likeablePersonService.delete(id, principal);
+
+        if (deleteRsData.isFail()) {
+            return rq.historyBack(deleteRsData);
+        }
+
+        return rq.redirectWithMsg("/likeablePerson/list", deleteRsData);
     }
 }

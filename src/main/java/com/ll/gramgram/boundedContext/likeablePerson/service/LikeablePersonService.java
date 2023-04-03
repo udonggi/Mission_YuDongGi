@@ -10,7 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -47,5 +49,19 @@ public class LikeablePersonService {
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
+    }
+
+    @Transactional
+    public RsData<LikeablePerson> delete(Integer id, Principal principal) {
+        Optional<LikeablePerson> person = likeablePersonRepository.findById(id);
+
+        if (person.isEmpty()) {
+            return RsData.of("F-1", "해당 호감상대가 존재하지 않습니다.");
+        }
+
+        LikeablePerson likeablePerson = person.get();
+        likeablePersonRepository.delete(likeablePerson);
+
+        return RsData.of("S-1", "해당 호감상대가 삭제되었습니다.", likeablePerson);
     }
 }
