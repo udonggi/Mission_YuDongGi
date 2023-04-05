@@ -49,3 +49,7 @@
 > 참고 문서 : https://daisyui.com/ (데이지UI), https://tailwindcss.com/docs/ (테일윈드), https://developers.google.com/identity/protocols/oauth2/scopes?hl=ko (google)
 
 
++ [추가사항]
++ UI 개선
++ ![img.png](../img/img.png)
+
