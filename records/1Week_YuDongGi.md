@@ -51,7 +51,8 @@
 
 [추가사항]
 + UI 개선
-<br/>
-![img.png](img.png)
++ ![img.png](../img/img.png)
+
+
 
 
