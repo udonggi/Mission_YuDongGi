@@ -51,7 +51,8 @@
 
 [추가사항]
 + UI 개선
-+ ![img.png](../img/img.png)
++ ![img.png](../img/img_main.png)
++ ![img.png](../img/img_login.png)
 
 
 
