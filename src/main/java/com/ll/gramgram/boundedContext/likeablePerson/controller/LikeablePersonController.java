@@ -63,8 +63,8 @@ public class LikeablePersonController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id, Principal principal) {
-        RsData<LikeablePerson> deleteRsData = likeablePersonService.delete(id, principal);
+    public String delete(@PathVariable("id") Integer id) {
+        RsData<LikeablePerson> deleteRsData = likeablePersonService.delete(id);
 
         if (deleteRsData.isFail()) {
             return rq.historyBack(deleteRsData);

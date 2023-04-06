@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
+import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
@@ -21,7 +22,7 @@ import java.util.Optional;
 public class LikeablePersonService {
     private final LikeablePersonRepository likeablePersonRepository;
     private final InstaMemberService instaMemberService;
-    private final MemberService memberService;
+    private final Rq rq;
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
@@ -54,9 +55,8 @@ public class LikeablePersonService {
     }
 
     @Transactional
-    public RsData<LikeablePerson> delete(Integer id, Principal principal) {
+    public RsData<LikeablePerson> delete(Integer id) {
         Optional<LikeablePerson> person = likeablePersonRepository.findById(id);
-        Optional<Member> member = memberService.findByUsername(principal.getName());
 
         if (person.isEmpty()) {
             return RsData.of("F-1", "해당 호감상대가 존재하지 않습니다.");
@@ -64,7 +64,7 @@ public class LikeablePersonService {
 
         LikeablePerson likeablePerson = person.get();
 
-        if (likeablePerson.getFromInstaMember().getId() != member.get().getInstaMember().getId()) {
+        if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId() ) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
