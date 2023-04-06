@@ -53,6 +53,10 @@
 + UI 개선
 + ![img.png](../img/img_main.png)
 + ![img.png](../img/img_login.png)
+<br/><br/><br/>
++ Rq 클래스를 활용하여 Id 비교하는 부분 수정 (getMember 메서드 활용)
++ 버그 수정 (오타 등등)
++
 
 
 
