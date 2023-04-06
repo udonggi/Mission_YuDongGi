@@ -63,7 +63,7 @@ public class LikeablePersonController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable("id") Integer id) {
+    public String delete(@PathVariable("id") Long id) {
         RsData<LikeablePerson> deleteRsData = likeablePersonService.delete(id);
 
         if (deleteRsData.isFail()) {
