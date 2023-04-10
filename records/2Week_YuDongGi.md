@@ -17,7 +17,11 @@
       <br/><br/>
 - ## **체크리스트**
     - [x] 이미 어떤 회원에게 호감표시를 하였을 경우 중복호감표시를 막도록 한다.
-    - [ ] 한명의 인스타회원이 11명 이상의 호감상대를 등록 할 수 없다. 
+      -[x] testcase 작성
+    - [x] 한명의 인스타회원이 11명 이상의 호감상대를 등록 할 수 없다. 
+      -[x] testcase 작성
+    - [ ] 기존에 표시한 사유와 다른 사유로 호감을 표시하는 경우는 가능하도록 한다.
+      -[x] testcase 작성
 
 <br/>
 
@@ -28,8 +32,9 @@
 **[접근 방법]**
 - LikeablePersonController의 add메서드를 통해 호감 표시를 진행하면 service에서 중복호감표시를 막도록 하였다.
 <br/>-> 레포지토리에 existsBy를 활용하여 이미 호감표시를 하였는지 체크하였다.
-- 
-- 
+<br/>->  boolean existsByFromInstaMemberIdAndToInstaMemberUsername(Long id, String username); 추가
+- 11명 이상의 호감상대를 등록 못하도록 하는 방법은 fromLikeablePeople의 사이즈를 체크하여 11이상일 경우 못하도록 하였다.
+<br/>-> 다음과 같이 서비스에서 걸러주었다. member.getInstaMember().getFromLikeablePeople().size() >= 10 
 
 **[특이사항]**
 
