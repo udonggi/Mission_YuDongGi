@@ -34,8 +34,12 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
-
         InstaMember fromInstaMember = member.getInstaMember();
+
+        if (likeablePersonRepository.existsByFromInstaMemberIdAndToInstaMemberUsername(fromInstaMember.getId(), username)) {
+            return RsData.of("F-3", "중복 호감표시는 할 수 없습니다.");
+        }
+
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
 
