@@ -244,7 +244,7 @@ public class LikeablePersonControllerTests {
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("add"))
                 .andExpect(status().is4xxClientError());
-        ;
+
     }
 
     @Test
@@ -274,7 +274,27 @@ public class LikeablePersonControllerTests {
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("add"))
                 .andExpect(status().is4xxClientError()); // 11번째는 추가가 되지 않고 Historyback
-        ;
+
+    }
+
+    @Test
+    @DisplayName("같은 회원 중복 호감표시할 때 다른 유형의 호감표시는 가능하다.")
+    @WithUserDetails("user3")
+    void t011() throws Exception{
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/likeablePerson/add")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "insta_user4")
+                        .param("attractiveTypeCode", "2")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("add"))
+                .andExpect(status().is3xxRedirection());
     }
 
 
