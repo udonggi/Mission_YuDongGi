@@ -45,41 +45,49 @@
         }
     </script>
 
-    <div class="flex justify-center">
-        <form th:action method="POST" class="p-10 flex flex-col gap-4"
-              onsubmit="LoginForm__submit(this); return false;">
-            <div>
-                <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
-            </div>
-            <div>
-                <input type="password" name="password" maxlength="30" placeholder="비밀번호" class="input input-bordered">
-            </div>
-            <div >
-                <input type="submit" value="로그인" class="btn btn-block btn-primary">
-            </div>
-        </form>
+    <div class="p-10">
+        <div class="flex justify-center">
+            <form th:action method="POST" class="flex flex-col gap-4" onsubmit="LoginForm__submit(this); return false;">
+                <div>
+                    <input type="text" name="username" maxlength="30" placeholder="아이디" class="input input-bordered">
+                </div>
+                <div>
+                    <input type="password" name="password" maxlength="30" placeholder="비밀번호"
+                           class="input input-bordered">
+                </div>
+                <div>
+                    <input type="submit" value="로그인" class="btn btn-block btn-primary">
+                </div>
+            </form>
+        </div>
+        <div class="flex justify-center">
+            <a href="/member/join" class="btn btn-link">회원가입</a>
+            <a href="#" class="btn btn-link">아이디찾기</a>
+            <a href="#" class="btn btn-link">비밀번호찾기</a>
+        </div>
     </div>
 
+
     <div class="flex items-center justify-center space-x-3 ">
-        <button class="btn bg-yellow-500 gap-1 ">
+        <a href="/oauth2/authorization/kakao" class="btn bg-yellow-500 gap-1 ">
             <i class="fa-solid fa-comment text-[color:#ffe812]"></i>
-            <a href="/oauth2/authorization/kakao">카카오 로그인</a>
-        </button>
+            <span>카카오 로그인</span>
+        </a>
 
-        <button class="btn gap-1" >
+        <a href="/oauth2/authorization/naver" class="btn gap-1" >
             <i class="fa-solid fa-n text-[color:#2DB400]"></i>
-            <a href="/oauth2/authorization/naver">네이버 로그인하기</a>
-        </button>
+            <span>네이버 로그인하기</span>
+        </a>
 
-        <button class="btn gap-1">
+        <a href="/oauth2/authorization/google" class="btn gap-1">
             <i class="fa-brands fa-google bg-gradient-to-r from-yellow-200 via-red-600 to-blue-400 inline-block text-transparent bg-clip-text"></i>
-            <a href="/oauth2/authorization/google">구글 로그인하기</a>
-        </button>
+            <span>구글 로그인하기</span>
+        </a>
 
-        <button class="btn gap-1">
+        <a href="#" class="btn gap-1">
             <i class="fa-brands fa-facebook text-[color:#3B5998]"></i>
             <span>페이스북 로그인</span>
-        </button>
+        </a>
     </div>
 </main>
 </body>
