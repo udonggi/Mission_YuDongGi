@@ -38,16 +38,8 @@ public class LikeablePersonService {
 
         InstaMember fromInstaMember = member.getInstaMember();
 
-        Optional<LikeablePerson> canLikeDuplicate = likeablePersonRepository.findByFromInstaMemberAndToInstaMemberUsername(fromInstaMember, username);
-
-        if (canLikeDuplicate.isPresent()) {
-            if(canLikeDuplicate.get().getAttractiveTypeCode() == attractiveTypeCode) {
-                return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
-            } else {
-                canLikeDuplicate.get().setAttractiveTypeCode(attractiveTypeCode);
-                return RsData.of("S-2", "%s에 대한 호감사유를 %s로 변경하였습니다.".formatted(username, attractiveTypeCode));
-            }
-        }
+        RsData<LikeablePerson> likeDuplicateRsData = canLikeDuplicate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
+        if (likeDuplicateRsData != null) return likeDuplicateRsData;
 
 
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
@@ -70,6 +62,21 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
+
+    private RsData<LikeablePerson> canLikeDuplicate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
+        Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMemberUsername(fromInstaMember, username);
+
+        if (likeablePerson.isPresent()) {
+            if(likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
+                return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
+            } else {
+                likeablePerson.get().setAttractiveTypeCode(attractiveTypeCode);
+                return RsData.of("S-2", "%s에 대한 호감사유를 %s로 변경하였습니다.".formatted(username, attractiveTypeCode));
+            }
+        }
+        return null;
+    }
+
 
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
