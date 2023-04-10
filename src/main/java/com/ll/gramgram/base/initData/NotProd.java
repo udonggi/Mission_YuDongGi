@@ -19,11 +19,11 @@ public class NotProd {
             LikeablePersonService likeablePersonService
     ) {
         return args -> {
-            Member memberAdmin = memberService.join("admin", "1234").getData();
-            Member memberUser1 = memberService.join("user1", "1234").getData();
-            Member memberUser2 = memberService.join("user2", "1234").getData();
-            Member memberUser3 = memberService.join("user3", "1234").getData();
-            Member memberUser4 = memberService.join("user4", "1234").getData();
+            Member memberAdmin = memberService.join("admin", "1234", "").getData();
+            Member memberUser1 = memberService.join("user1", "1234","").getData();
+            Member memberUser2 = memberService.join("user2", "1234","").getData();
+            Member memberUser3 = memberService.join("user3", "1234", "").getData();
+            Member memberUser4 = memberService.join("user4", "1234", "").getData();
 
             Member memberUser5ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2731659195").getData();
             Member memberUser6ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__101539669540183516919").getData();

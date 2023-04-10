@@ -60,7 +60,12 @@
 
 [추가사항]
 +
-+
++ UI 개선
++ ![img.png](../img/img_list.png)
++ swqp 기능 추가
++ ![img.png](../img/img_main_swap1.png)
++ 클릭하면 변한다
++ ![img.png](../img/img_main_swap2.png)
 
 
 

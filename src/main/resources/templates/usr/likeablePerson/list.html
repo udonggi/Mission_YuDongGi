@@ -21,13 +21,15 @@
         <div class="flex justify-center p-10">
             <ul>
                 <li th:each="likeablePerson: ${likeablePeople}">
-                    <span class="toInstaMember_username" th:text="${likeablePerson.toInstaMember.username}"></span>
-                    <span class="toInstaMember_attractiveTypeDisplayName"
-                          th:text="${likeablePerson.attractiveTypeDisplayName}"></span>
-                    <a href="javascript:;" onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();">삭제</a>
-                    <form hidden th:action="@{|/likeablePerson/${likeablePerson.id}|}" method="POST">
-                        <input type="hidden" name="_method" value="delete">
-                    </form>
+                    <div class="btn btn-block gap-2">
+                        <span class="toInstaMember_username" th:text="${likeablePerson.toInstaMember.username}"></span>
+                        <span class="toInstaMember_attractiveTypeDisplayName badge badge-primary"
+                              th:text="${likeablePerson.attractiveTypeDisplayName}"></span>
+                        <a href="javascript:;" class="badge badge-secondary" onclick="if ( confirm('정말로 삭제하시겠습니까?') ) $(this).next().submit();">삭제</a>
+                        <form hidden th:action="@{|/likeablePerson/${likeablePerson.id}|}" method="POST">
+                            <input type="hidden" name="_method" value="delete">
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>
