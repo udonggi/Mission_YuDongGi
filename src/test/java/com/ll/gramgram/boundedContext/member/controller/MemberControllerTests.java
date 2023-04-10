@@ -218,4 +218,22 @@ public class MemberControllerTests {
                         user1님 환영합니다.
                         """.stripIndent().trim())));
     }
+
+    @Test
+    @DisplayName("findLoginId  테스트")
+    void t007() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/member/findLoginId")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("email", "dongki1882@naver.com"));
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(MemberController.class))
+                .andExpect(handler().methodName("findLoginId"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("/member/login?msg=**"));
+    }
+
 }

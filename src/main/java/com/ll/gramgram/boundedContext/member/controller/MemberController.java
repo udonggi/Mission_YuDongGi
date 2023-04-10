@@ -70,4 +70,35 @@ public class MemberController {
     public String showMe() {
         return "usr/member/me";
     }
+
+    @AllArgsConstructor // @Setter 도 가능, 데이터를 저장할 방편을 마련하기 위해서
+    @Getter // joinForm.getUsername() 이런 코드 가능하게
+    public static class FindLoginIdForm {
+        @Email
+        @NotBlank
+        private final String email;
+    }
+
+    @GetMapping("/findLoginId")
+    public String showFindLoginId() {
+        return "usr/member/findLoginId";
+    }
+
+    @PostMapping("/findLoginId")
+    public String findLoginId(@Valid FindLoginIdForm findLoginIdForm) {
+        RsData<Member> findLoginIdRs = memberService.findLoginId(findLoginIdForm.getEmail());
+
+        if (findLoginIdRs.isFail()) {
+            return rq.historyBack(findLoginIdRs);
+        }
+
+        return rq.redirectWithMsg("/member/login", findLoginIdRs);
+    }
+
+
+
+    @GetMapping("/findLoginPw")
+    public String showFindLoginPw() {
+        return "usr/member/findLoginPw";
+    }
 }

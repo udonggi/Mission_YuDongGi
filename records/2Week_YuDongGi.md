@@ -51,6 +51,9 @@
   - provider에 authorization-uri, token-uri, user-info-uri, user-name-attribute 을 입력해주어야 한다.
   - 네이버 회원 조회시에 반환되는 json 형태에서 response 안에 있는 id를 가져와야 한다. (Map 사용)
 
+- 추가
+  - 회원가입시 이메일 발송: 이메일 발송은 구글의 smtp를 사용하였다. 구글링을 열심히 하여 겨우 해내었다. 
+
 **[특이사항]**
 
 - 
@@ -59,7 +62,8 @@
 
 
 [추가사항]
-+
++ 회원가입시 이메일 발송
+<br/><br/>
 + UI 개선
 + ![img.png](../img/img_list.png)
 + swqp 기능 추가

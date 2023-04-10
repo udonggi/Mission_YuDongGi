@@ -98,5 +98,23 @@ public class MemberService {
         mailSender.send(message);
     }
 
+    @Transactional
+    public void mailSend(String email, String username) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(email);
+        message.setSubject("gramgram 아이디 찾기");
+        message.setText("아이디는 " + username + " 입니다.");
 
+        mailSender.send(message);
+    }
+
+
+    public RsData<Member> findLoginId(String email) {
+        Optional<Member> member = findByEmail(email);
+        if (member.isPresent()) {
+            mailSend(email, member.get().getUsername());
+            return RsData.of("S-1", "아이디를 메일로 발송하였습니다.", member.get());
+        }
+        return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
+    }
 }
