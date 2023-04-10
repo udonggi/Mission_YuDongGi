@@ -295,6 +295,8 @@ public class LikeablePersonControllerTests {
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("add"))
                 .andExpect(status().is3xxRedirection());
+
+        assertThat(likeablePersonRepository.findById(1L).get().getAttractiveTypeCode()).isEqualTo(2);
     }
 
 

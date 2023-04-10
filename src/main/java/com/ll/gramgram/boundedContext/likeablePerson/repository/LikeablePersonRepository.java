@@ -9,6 +9,5 @@ import java.util.List;
 public interface LikeablePersonRepository extends JpaRepository<LikeablePerson, Long> {
     List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId);
 
-
     boolean existsByFromInstaMemberAndToInstaMemberUsernameAndAttractiveTypeCode(InstaMember fromInstaMember, String username, int attractiveTypeCode);
 }

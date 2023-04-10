@@ -40,9 +40,12 @@ public class LikeablePersonService {
 
         InstaMember fromInstaMember = member.getInstaMember();
 
+
         if (likeablePersonRepository.existsByFromInstaMemberAndToInstaMemberUsernameAndAttractiveTypeCode(fromInstaMember, username, attractiveTypeCode)) {
             return RsData.of("F-3", "같은 사유의 중복 호감표시는 할 수 없습니다.");
         }
+
+
 
 
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
