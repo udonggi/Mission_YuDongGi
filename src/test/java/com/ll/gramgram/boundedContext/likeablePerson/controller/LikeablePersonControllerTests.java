@@ -32,7 +32,7 @@ public class LikeablePersonControllerTests {
     private MockMvc mvc;
     @Autowired
     private LikeablePersonRepository likeablePersonRepository;
-;
+    ;
 
     @Test
     @DisplayName("등록 폼(인스타 인증을 안해서 폼 대신 메세지)")
@@ -220,4 +220,26 @@ public class LikeablePersonControllerTests {
 
         assertThat(likeablePersonRepository.findById(1L).isPresent()).isEqualTo(true);
     }
+
+    @Test
+    @DisplayName("user3이 user4에게 외모 중복 호감표시를 했을 때")
+    @WithUserDetails("user3")
+    void t009() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/likeablePerson/add")
+                        .with(csrf()) // CSRF 키 생성
+                        .param("username", "insta_user4")
+                        .param("attractiveTypeCode", "1")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("add"))
+                .andExpect(status().is4xxClientError());
+        ;
+    }
+
 }
