@@ -40,26 +40,41 @@
     <div class="flex justify-center">
         <form th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
               onsubmit="ConnectForm__submit(this); return false;">
+            <h1 class="mb-1">
+                <i class="fa-brands fa-instagram"></i>
+                인스타ID 인증
+            </h1>
             <div>
-                <input type="text" name="username" autocomplete="off" maxlength="30" placeholder="인스타그램 아이디"
+                <input type="text" name="username" autocomplete="off" maxlength="30" placeholder="인스타그램 ID"
                        class="input input-bordered">
             </div>
-            <div>
-                <div class="form-control">
-                    <label class="label cursor-pointer">
-                        <span class="label-text">남자</span>
-                        <input type="radio" name="gender" value="M" class="radio focus:bg-red-100">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">성별</span>
+                </label>
+
+
+                <div class="flex justify-center gap-4">
+                    <label class="flex gap-2 items-center cursor-pointer">
+                        <input class="radio" type="radio" name="gender" value="W">
+                        <span>
+                            <i class="fa-solid fa-person-dress"></i>
+                            여성
+                        </span>
+                    </label>
+
+                    <label class="flex gap-2 items-center cursor-pointer">
+                        <input class="radio" type="radio" name="gender" value="M">
+                             <span>
+                                <i class="fa-solid fa-person"></i>
+                                 남성
+                             </span>
                     </label>
                 </div>
-                <div class="form-control">
-                    <label class="label cursor-pointer">
-                        <span class="label-text">여자</span>
-                        <input type="radio" name="gender" value="W" class="radio focus:bg-red-100">
-                    </label>
-                </div>
+
             </div>
             <div>
-                <input type="submit" value="정보입력" class="btn btn-primary">
+                <input type="submit" value="인스타ID 인증" class="btn btn-block btn-primary">
             </div>
         </form>
     </div>

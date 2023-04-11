@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -99,11 +100,11 @@ public class MemberService {
     }
 
     @Transactional
-    public void mailSend(String email, String username) {
+    public void mailSend(String email, String findInfo) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(email);
-        message.setSubject("gramgram 아이디 찾기");
-        message.setText("아이디는 " + username + " 입니다.");
+        message.setSubject("gramgram 내 정보 찾기");
+        message.setText("찾으시려는 것은 " + findInfo + " 입니다.");
 
         mailSender.send(message);
     }
@@ -114,6 +115,19 @@ public class MemberService {
         if (member.isPresent()) {
             mailSend(email, member.get().getUsername());
             return RsData.of("S-1", "아이디를 메일로 발송하였습니다.", member.get());
+        }
+        return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
+    }
+
+    @Transactional
+    public RsData<Member> findLoginPw(String username, String email) {
+        Optional<Member> member = findByUsername(username);
+        if (member.isPresent() && member.get().getEmail().equals(email) ) {
+            String tempPw = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10); // 임시 비밀번호 생성
+            member.get().setPassword(tempPw); // 임시 비밀번호로 변경
+            mailSend(email, member.get().getPassword()); // 임시 비밀번호 메일로 발송
+            member.get().setPassword(passwordEncoder.encode(member.get().getPassword())); // 임시 비밀번호 암호화
+            return RsData.of("S-1", "비밀번호를 메일로 발송하였습니다.", member.get());
         }
         return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
     }

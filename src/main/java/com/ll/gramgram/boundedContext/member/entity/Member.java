@@ -33,6 +33,7 @@ public class Member {
     private String providerTypeCode; // 일반회원인지, 카카오로 가입한 회원인지, 구글로 가입한 회원인지
     @Column(unique = true)
     private String username;
+    @Setter
     private String password;
 
     @Setter
