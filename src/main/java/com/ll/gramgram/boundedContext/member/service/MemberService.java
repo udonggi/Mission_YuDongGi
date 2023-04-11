@@ -53,10 +53,10 @@ public class MemberService {
                 .username(username)
                 .password(password)
                 .build();
-        if(!email.isBlank()){
+        if (!email.isBlank()) {
             member.setEmail(email);
             mailSend(email);
-        }else{
+        } else {
             member.setEmail("null");
         }
 
@@ -122,7 +122,7 @@ public class MemberService {
     @Transactional
     public RsData<Member> findLoginPw(String username, String email) {
         Optional<Member> member = findByUsername(username);
-        if (member.isPresent() && member.get().getEmail().equals(email) ) {
+        if (member.isPresent() && member.get().getEmail().equals(email)) {
             String tempPw = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10); // 임시 비밀번호 생성
             member.get().setPassword(tempPw); // 임시 비밀번호로 변경
             mailSend(email, member.get().getPassword()); // 임시 비밀번호 메일로 발송

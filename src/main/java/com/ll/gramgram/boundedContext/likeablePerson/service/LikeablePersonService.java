@@ -24,7 +24,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
-        if (member.hasConnectedInstaMember() == false) {
+        if (!member.hasConnectedInstaMember()) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
 
@@ -67,7 +67,7 @@ public class LikeablePersonService {
         Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMemberUsername(fromInstaMember, username);
 
         if (likeablePerson.isPresent()) {
-            if(likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
+            if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
             } else {
                 likeablePerson.get().setAttractiveTypeCode(attractiveTypeCode);
