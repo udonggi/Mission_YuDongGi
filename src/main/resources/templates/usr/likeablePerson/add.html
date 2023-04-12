@@ -65,14 +65,15 @@
             </div>
         </div>
         <div class="flex justify-center">
-            <form th:if="${@rq.member.getInstaMember().getFromLikeablePeople().size() < @appConfig.getLikeablePersonFromMax()}" th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
+            <form th:if="${@rq.member.getInstaMember().getFromLikeablePeople().size() < @appConfig.getLikeablePersonFromMax()}" th:action method="POST" class="p-10  flex flex-col max-w-sm  gap-4"
                   onsubmit="AddForm__submit(this); return false;">
                 <div>
                     당신의 인스타ID : <span class="badge" th:text="${@rq.member.instaMember.username}"></span>
                 </div>
+
+                <input class="input input-bordered input-primary" autocomplete="off" type="text" name="username" placeholder="상대방의 인스타 ID" onchange="$(this).keyup();" onkeyup="$(this).next().children(':last-child').text(this.value.trim()); $(this).next().find('a').attr('href', 'https://www.instagram.com/' + encodeURIComponent(this.value.trim()));" >
                 <div>
-                    <input type="text" name="username" autocomplete="off" maxlength="30" placeholder="상대방의 인스타그램 아이디"
-                           class="input input-bordered input-primary">
+                    <span>상대방 인스타 확인: </span><a href="#" target="_blank" class="link link-secondary"></a>
                 </div>
                 <div>
                     <div class="form-control">

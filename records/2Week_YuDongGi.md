@@ -95,7 +95,9 @@
 + 인스타ID 인증 UI개선
 + ![img.png](../img/img_instaID.png)
 + 10명 호감표시 후에 인스타 호감표시 하러 들어가면 경고창
-+ ![img.png](img.png)
++ ![img.png](../img/img_like_10.png)
++ 호감표시 전에 상대방 인스타 확인하기 (링크 클릭시 이동)
++ ![img.png](../img/img_instacheck.png)
 
 
 
