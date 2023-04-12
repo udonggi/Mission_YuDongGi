@@ -40,12 +40,15 @@
 
 **[접근 방법]**
 - 케이스 4번: LikeablePersonController의 add메서드를 통해 호감 표시를 진행하면 service에서 중복호감표시를 막도록 하였다.
-<br/>-> 존재 여부만 확인하면 되니 레포지토리에 existsBy를 활용하여 이미 호감표시를 하였는지 체크하였다.
-<br/>->  boolean existsByFromInstaMemberIdAndToInstaMemberUsername(Long id, String username); 추가 
+<br/> - 존재 여부만 확인하면 되니 레포지토리에 existsBy를 활용하여 이미 호감표시를 하였는지 체크하였다.
+<br/> - boolean existsByFromInstaMemberIdAndToInstaMemberUsername(Long id, String username); 추가
+<br/> - ToInstaMemberUsername은 임시방편일 뿐 사용하지 않고 ToInstaMember_username으로 수정하였다.
 <br/><br/>
 
 - 케이스 5번: 11명 이상의 호감상대를 등록 못하도록 하는 방법은 fromLikeablePeople의 사이즈를 체크하여 11이상일 경우 못하도록 하였다.
-<br/>-> 다음과 같이 서비스에서 걸러주었다. member.getInstaMember().getFromLikeablePeople().size() >= 10 
+<br/> - 다음과 같이 서비스에서 걸러주었다. member.getInstaMember().getFromLikeablePeople().size() >= 10 
+<br/> - 하드코딩이 아닌 타임리프로 해결하는 방법도 시도해보았다. th:if 와 .yml, Appconfig에 등록해 놓은 10명을 사용하여 10명째에 
+호감표시를 하려는 순간 호감표시 창이 아닌 경고창을 띄워주도록 하였다.
 <br/><br/>
 - 케이스 6번
   - 처음에는 호감 사유만 다르면 변경이 아니라 추가로 잘못 생각하여 boolean existsByFromInstaMemberAndToInstaMemberUsernameAndAttractiveTypeCode(InstaMember fromInstaMember, String username, int attractiveTypeCode) 
