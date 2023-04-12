@@ -67,6 +67,7 @@
   - 비밀번호 찾기시 아이디와 이메일 입력 후 이메일로 임시 비밀번호 전송: 비밀번호 찾기로 들어가면 아이디와 이메일을 입력하게 하였고 일치하는 회원이 있을 경우 임시 비밀번호를 UUID로 생성하여 이메일로 전송
     하고 다시 암호화 해주었다.
   - UI도 개선해주었다.
+  - onkeyup을 활용하여 호감표시하기 전에 인스타그램 링크로 이동 상대방의 인스타를 확인 할 수 있게 하였다.
 
 **[특이사항]**
 
@@ -80,24 +81,27 @@
 
 [추가사항]
 + 회원가입시 축하 이메일 발송
-+ ![img.png](../img/img_joinmessage.png)
++ ![img.png](../img/2Week/img_joinmessage.png)
 + 아이디 찾기시 이메일로 아이디 전송
-+ ![img.png](../img/img_findId.png)
++ ![img.png](../img/2Week/img_findId.png)
 + 비밀번호 찾기시 아이디와 이메일 입력 후 이메일로 임시 비밀번호 전송(UUID 활용)
-+ ![img.png](../img/img_findPw.png)
++ ![img.png](../img/2Week/img_findPw.png)
 <br/><br/>
 + UI 개선
-+ ![img.png](../img/img_list.png)
++ 로그인 페이지에 아이디 찾기, 비밀번호 찾기
++ ![img.png](../img/2Week/img_login2.png)
++ 호감 목록
++ ![img.png](../img/2Week/img_list.png)
 + swap 기능 추가
-+ ![img.png](../img/img_main_swap1.png)
++ ![img.png](../img/2Week/img_main_swap1.png)
 + 클릭하면 변한다
-+ ![img.png](../img/img_main_swap2.png)
++ ![img.png](../img/2Week/img_main_swap2.png)
 + 인스타ID 인증 UI개선
-+ ![img.png](../img/img_instaID.png)
++ ![img.png](../img/2Week/img_instaID.png)
 + 10명 호감표시 후에 인스타 호감표시 하러 들어가면 경고창
-+ ![img.png](../img/img_like_10.png)
++ ![img.png](../img/2Week/img_like_10.png)
 + 호감표시 전에 상대방 인스타 확인하기 (링크 클릭시 이동)
-+ ![img.png](../img/img_instacheck.png)
++ ![img.png](../img/2Week/img_instacheck.png)
 
 
 
