@@ -56,9 +56,16 @@
                 form.submit(); // 폼 발송
             }
         </script>
-
         <div class="flex justify-center">
-            <form th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
+            <div th:if="${@rq.member.getInstaMember().getFromLikeablePeople().size() == @appConfig.getLikeablePersonFromMax()}" class="alert alert-error shadow-lg max-w-2xl w-full">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current flex-shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>인스타 호감표시는 10명까지만 가능합니다!</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex justify-center">
+            <form th:if="${@rq.member.getInstaMember().getFromLikeablePeople().size() < @appConfig.getLikeablePersonFromMax()}" th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
                   onsubmit="AddForm__submit(this); return false;">
                 <div>
                     당신의 인스타ID : <span class="badge" th:text="${@rq.member.instaMember.username}"></span>

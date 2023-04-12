@@ -32,9 +32,9 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
-        if (member.getInstaMember().getFromLikeablePeople().size() >= 10) {
-            return RsData.of("F-4", "호감상대는 10명까지만 등록할 수 있습니다.");
-        }
+//        if (member.getInstaMember().getFromLikeablePeople().size() >= 10) {
+//            return RsData.of("F-4", "호감상대는 10명까지만 등록할 수 있습니다.");
+//        }
 
         InstaMember fromInstaMember = member.getInstaMember();
 
@@ -64,14 +64,14 @@ public class LikeablePersonService {
     }
 
     private RsData<LikeablePerson> canLikeDuplicate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
-        Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMemberUsername(fromInstaMember, username);
+        Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMember_username(fromInstaMember, username);
 
         if (likeablePerson.isPresent()) {
             if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
             } else {
                 likeablePerson.get().setAttractiveTypeCode(attractiveTypeCode);
-                return RsData.of("S-2", "%s에 대한 호감사유를 %s로 변경하였습니다.".formatted(username, attractiveTypeCode));
+                return RsData.of("S-2", "%s에 대한 호감사유를 변경하였습니다.".formatted(username));
             }
         }
         return null;

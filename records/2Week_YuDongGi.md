@@ -91,6 +91,8 @@
 + ![img.png](../img/img_main_swap2.png)
 + 인스타ID 인증 UI개선
 + ![img.png](../img/img_instaID.png)
++ 10명 호감표시 후에 인스타 호감표시 하러 들어가면 경고창
++ ![img.png](img.png)
 
 
 
