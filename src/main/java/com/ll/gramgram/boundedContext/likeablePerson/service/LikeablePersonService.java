@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
+import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
@@ -32,15 +33,15 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
-//        if (member.getInstaMember().getFromLikeablePeople().size() >= 10) {
-//            return RsData.of("F-4", "호감상대는 10명까지만 등록할 수 있습니다.");
-//        }
 
         InstaMember fromInstaMember = member.getInstaMember();
 
         RsData<LikeablePerson> likeDuplicateRsData = canLikeDuplicate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
         if (likeDuplicateRsData != null) return likeDuplicateRsData;
 
+        if (member.getInstaMember().getFromLikeablePeople().size() >= AppConfig.getLikeablePersonFromMax()) { //변경 밑에 있는 이유는 변경은 가능하게 해야 하므로
+            return RsData.of("F-4", "호감상대는 10명까지만 등록할 수 있습니다.");
+        }
 
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
 
