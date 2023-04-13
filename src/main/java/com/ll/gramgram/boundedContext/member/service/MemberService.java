@@ -124,9 +124,8 @@ public class MemberService {
         Optional<Member> member = findByUsername(username);
         if (member.isPresent() && member.get().getEmail().equals(email)) {
             String tempPw = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10); // 임시 비밀번호 생성
-            member.get().setPassword(tempPw); // 임시 비밀번호로 변경
-            mailSend(email, member.get().getPassword()); // 임시 비밀번호 메일로 발송
-            member.get().setPassword(passwordEncoder.encode(member.get().getPassword())); // 임시 비밀번호 암호화
+            mailSend(email, tempPw); // 임시 비밀번호 메일로 발송
+            member.get().setPassword(passwordEncoder.encode(tempPw)); // 임시 비밀번호 암호화
             return RsData.of("S-1", "비밀번호를 메일로 발송하였습니다.", member.get());
         }
         return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
