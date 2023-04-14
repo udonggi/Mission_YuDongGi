@@ -1,4 +1,16 @@
 spring:
+  mail:
+    host: smtp.gmail.com
+    port:
+    username: "gmail 계정"
+    password: "앱 비밀번호"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
   security:
     oauth2:
       client:

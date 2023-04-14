@@ -7,8 +7,19 @@
 <body>
 
 <main layout:fragment="main">
-    <div class="flex justify-center hover:text-pink-500 pt-12">
-        <i class="fa-solid fa-hand-holding-heart text-[10rem]"></i>
+    <div class="flex justify-center">
+        <label class="swap swap-flip text-9xl gap-2">
+
+            <!-- this hidden checkbox controls the state -->
+            <input type="checkbox"/>
+
+            <div class="swap-on pt-12">😈</div>
+            <div class="swap-off">
+                <div class="hover:text-pink-500 pt-12">
+                    <i class="fa-solid fa-hand-holding-heart text-[10rem]"></i>
+                </div>
+            </div>
+        </label>
     </div>
 </main>
 

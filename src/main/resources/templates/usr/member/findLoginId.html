@@ -1,0 +1,41 @@
+<html layout:decorate="~{usr/layout/layout.html}">
+
+<head>
+    <title>아이디 찾기</title>
+</head>
+
+<body>
+
+<main layout:fragment="main">
+    <script>
+        function FindLoginIdForm__submit(form) {
+
+
+            form.email.value = form.email.value.trim(); // 입력란의 입력값에 있을지 모르는 좌우공백제거
+
+            if (form.email.value.length == 0) {
+                toastWarning('이메일을 입력해주세요.');
+                form.username.focus();
+                return;
+            }
+
+
+            form.submit(); // 폼 발송
+        }
+    </script>
+
+    <div class="flex justify-center">
+        <form th:action method="POST" class="p-10 flex flex-col gap-4" onsubmit="FindLoginIdForm__submit(this); return false;">
+            <div>
+                <input type="email" name="email" placeholder="이메일" class="input input-bordered">
+            </div>
+            <div>
+                <input type="submit" value="아이디찾기" class="btn btn-primary">
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+
+</html>

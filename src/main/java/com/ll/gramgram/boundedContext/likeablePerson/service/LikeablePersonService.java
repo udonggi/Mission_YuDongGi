@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
+import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
@@ -7,12 +8,10 @@ import com.ll.gramgram.boundedContext.instaMember.service.InstaMemberService;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.member.entity.Member;
-import com.ll.gramgram.boundedContext.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ public class LikeablePersonService {
 
     @Transactional
     public RsData<LikeablePerson> like(Member member, String username, int attractiveTypeCode) {
-        if (member.hasConnectedInstaMember() == false) {
+        if (!member.hasConnectedInstaMember()) {
             return RsData.of("F-2", "먼저 본인의 인스타그램 아이디를 입력해야 합니다.");
         }
 
@@ -34,8 +33,18 @@ public class LikeablePersonService {
             return RsData.of("F-1", "본인을 호감상대로 등록할 수 없습니다.");
         }
 
+
         InstaMember fromInstaMember = member.getInstaMember();
+
+        RsData<LikeablePerson> likeDuplicateRsData = checkLikeAndUpdate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
+        if (likeDuplicateRsData != null) return likeDuplicateRsData;
+
+        if (member.getInstaMember().getFromLikeablePeople().size() >= AppConfig.getLikeablePersonFromMax()) { //변경 밑에 있는 이유는 변경은 가능하게 해야 하므로
+            return RsData.of("F-4", "호감상대는 10명까지만 등록할 수 있습니다.");
+        }
+
         InstaMember toInstaMember = instaMemberService.findByUsernameOrCreate(username).getData();
+
 
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
@@ -55,6 +64,21 @@ public class LikeablePersonService {
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
+    private RsData<LikeablePerson> checkLikeAndUpdate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
+        Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMember_username(fromInstaMember, username);
+
+        if (likeablePerson.isPresent()) {
+            if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
+                return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
+            } else {
+                likeablePerson.get().setAttractiveTypeCode(attractiveTypeCode);
+                return RsData.of("S-2", "%s에 대한 호감사유를 변경하였습니다.".formatted(username));
+            }
+        }
+        return null;
+    }
+
+
     public List<LikeablePerson> findByFromInstaMemberId(Long fromInstaMemberId) {
         return likeablePersonRepository.findByFromInstaMemberId(fromInstaMemberId);
     }
@@ -69,9 +93,15 @@ public class LikeablePersonService {
 
         LikeablePerson likeablePerson = person.get();
 
-        if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId() ) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
+        if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId()) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
+
+        // 너가 생성한 좋아요가 사라졌어.
+        likeablePerson.getFromInstaMember().removeFromLikeablePerson(likeablePerson);
+
+        // 너가 받은 좋아요가 사라졌어.
+        likeablePerson.getToInstaMember().removeToLikeablePerson(likeablePerson);
 
         likeablePersonRepository.delete(likeablePerson);
 

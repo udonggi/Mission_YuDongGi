@@ -5,6 +5,7 @@ import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.service.MemberService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -38,12 +39,16 @@ public class MemberController {
         @NotBlank
         @Size(min = 4, max = 30)
         private final String password;
+
+        private final String email;
     }
 
     @PreAuthorize("isAnonymous()")
     @PostMapping("/join")
     public String join(@Valid JoinForm joinForm) { // @Valid 가 없으면 @NotBlank 등이 작동하지 않음, 만약에 유효성 문제가 있다면 즉시 정지
-        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword());
+
+
+        RsData<Member> joinRs = memberService.join(joinForm.getUsername(), joinForm.getPassword(), joinForm.getEmail());
 
         if (joinRs.isFail()) {
             // 뒤로가기 하고 거기서 메세지 보여줘
@@ -65,4 +70,60 @@ public class MemberController {
     public String showMe() {
         return "usr/member/me";
     }
+
+    @AllArgsConstructor
+    @Getter
+    public static class FindLoginIdForm {
+        @Email
+        @NotBlank
+        private final String email;
+    }
+
+    @GetMapping("/findLoginId")
+    public String showFindLoginId() {
+        return "usr/member/findLoginId";
+    }
+
+    @PostMapping("/findLoginId")
+    public String findLoginId(@Valid FindLoginIdForm findLoginIdForm) {
+        RsData<Member> findLoginIdRs = memberService.findLoginId(findLoginIdForm.getEmail());
+
+        if (findLoginIdRs.isFail()) {
+            return rq.historyBack(findLoginIdRs);
+        }
+
+        return rq.redirectWithMsg("/member/login", findLoginIdRs);
+    }
+
+
+    @AllArgsConstructor
+    @Getter
+    public static class FindLoginPwForm {
+        @NotBlank
+        @Size(min = 4, max = 30)
+        private final String username;
+
+        @NotBlank
+        @Email
+        private final String email;
+    }
+
+
+    @GetMapping("/findLoginPw")
+    public String showFindLoginPw() {
+        return "usr/member/findLoginPw";
+    }
+
+
+    @PostMapping("/findLoginPw")
+    public String findLoginPw(@Valid FindLoginPwForm findLoginPwForm) {
+        RsData<Member> findLoginPwRs = memberService.findLoginPw(findLoginPwForm.getUsername(), findLoginPwForm.getEmail());
+
+        if (findLoginPwRs.isFail()) {
+            return rq.historyBack(findLoginPwRs);
+        }
+
+        return rq.redirectWithMsg("/member/login", findLoginPwRs);
+    }
+
 }
