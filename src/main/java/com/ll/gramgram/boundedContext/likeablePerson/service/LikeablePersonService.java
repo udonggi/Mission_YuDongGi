@@ -36,7 +36,7 @@ public class LikeablePersonService {
 
         InstaMember fromInstaMember = member.getInstaMember();
 
-        RsData<LikeablePerson> likeDuplicateRsData = canLikeDuplicate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
+        RsData<LikeablePerson> likeDuplicateRsData = checkLikeAndUpdate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
         if (likeDuplicateRsData != null) return likeDuplicateRsData;
 
         if (member.getInstaMember().getFromLikeablePeople().size() >= AppConfig.getLikeablePersonFromMax()) { //변경 밑에 있는 이유는 변경은 가능하게 해야 하므로
@@ -64,7 +64,7 @@ public class LikeablePersonService {
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
-    private RsData<LikeablePerson> canLikeDuplicate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
+    private RsData<LikeablePerson> checkLikeAndUpdate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
         Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMember_username(fromInstaMember, username);
 
         if (likeablePerson.isPresent()) {

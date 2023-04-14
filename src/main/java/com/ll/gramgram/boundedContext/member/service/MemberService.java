@@ -1,5 +1,6 @@
 package com.ll.gramgram.boundedContext.member.service;
 
+import com.ll.gramgram.base.emailSender.EmailSenderService;
 import com.ll.gramgram.base.rsData.RsData;
 import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.member.entity.Member;
@@ -7,6 +8,8 @@ import com.ll.gramgram.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,11 +24,12 @@ import java.util.UUID;
 public class MemberService {
     private final PasswordEncoder passwordEncoder;
     private final MemberRepository memberRepository;
-    private final JavaMailSender mailSender;
+    private final EmailSenderService emailSenderService;
 
     public Optional<Member> findByUsername(String username) {
         return memberRepository.findByUsername(username);
     }
+
 
     @Transactional // SELECT 이외의 쿼리에 대한 가능성이 아주 조금이라도 있으면 붙인다.
     // 일반 회원가입(소셜 로그인을 통한 회원가입이 아님)
@@ -55,7 +59,7 @@ public class MemberService {
                 .build();
         if (!email.isBlank()) {
             member.setEmail(email);
-            mailSend(email);
+            emailSenderService.mailSend(email);
         } else {
             member.setEmail("null");
         }
@@ -89,45 +93,28 @@ public class MemberService {
         return join(providerTypeCode, username, "", ""); // 최초 로그인 시 딱 한번 실행
     }
 
-    @Transactional
-    public void mailSend(String email) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("gramgram 회원가입을 축하드립니다!");
-        message.setText("회원가입을 축하드립니다!");
-
-        mailSender.send(message);
-    }
-
-    @Transactional
-    public void mailSend(String email, String findInfo) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(email);
-        message.setSubject("gramgram 내 정보 찾기");
-        message.setText("찾으시려는 것은 " + findInfo + " 입니다.");
-
-        mailSender.send(message);
-    }
 
 
     public RsData<Member> findLoginId(String email) {
         Optional<Member> member = findByEmail(email);
         if (member.isPresent()) {
-            mailSend(email, member.get().getUsername());
+            emailSenderService.mailSend(email, member.get().getUsername());
             return RsData.of("S-1", "아이디를 메일로 발송하였습니다.", member.get());
         }
         return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
     }
+
 
     @Transactional
     public RsData<Member> findLoginPw(String username, String email) {
         Optional<Member> member = findByUsername(username);
         if (member.isPresent() && member.get().getEmail().equals(email)) {
             String tempPw = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 10); // 임시 비밀번호 생성
-            mailSend(email, tempPw); // 임시 비밀번호 메일로 발송
+            emailSenderService.mailSend(email, tempPw); // 임시 비밀번호 메일로 발송
             member.get().setPassword(passwordEncoder.encode(tempPw)); // 임시 비밀번호 암호화
             return RsData.of("S-1", "비밀번호를 메일로 발송하였습니다.", member.get());
         }
         return RsData.of("F-1", "해당 이메일로 가입된 회원이 없습니다.");
     }
+
 }
