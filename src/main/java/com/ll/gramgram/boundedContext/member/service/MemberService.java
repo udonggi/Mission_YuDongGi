@@ -6,10 +6,6 @@ import com.ll.gramgram.boundedContext.instaMember.entity.InstaMember;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import com.ll.gramgram.boundedContext.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -92,7 +88,6 @@ public class MemberService {
         // 소셜 로그인를 통한 가입시 비번은 없다.
         return join(providerTypeCode, username, "", ""); // 최초 로그인 시 딱 한번 실행
     }
-
 
 
     public RsData<Member> findLoginId(String email) {

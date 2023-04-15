@@ -4,7 +4,7 @@ spring:
       filter:
         enabled: true
   profiles:
-#    yml 파일을 원하는 만큼 분리하고 한 번에 사용할 수 있다.
+    #    yml 파일을 원하는 만큼 분리하고 한 번에 사용할 수 있다.
     include: oauth
     active: dev
   datasource:
