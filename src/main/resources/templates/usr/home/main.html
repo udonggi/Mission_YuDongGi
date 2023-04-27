@@ -1,13 +1,12 @@
 <html layout:decorate="~{usr/layout/layout.html}">
 
 <head>
-    <title>메인</title>
+    <title>홈</title>
 </head>
 
 <body>
 
-<main layout:fragment="main">
-    <div class="flex justify-center">
+<main layout:fragment="main" class="flex-grow items-center flex justify-center" >
         <label class="swap swap-flip text-9xl gap-2">
 
             <!-- this hidden checkbox controls the state -->
@@ -20,7 +19,10 @@
                 </div>
             </div>
         </label>
-    </div>
+        <div class="text-center">
+            당신의 호감을 응원합니다.
+        </div>
+
 </main>
 
 </body>
