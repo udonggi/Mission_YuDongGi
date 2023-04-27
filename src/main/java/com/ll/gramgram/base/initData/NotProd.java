@@ -22,7 +22,7 @@ public class NotProd {
             Member memberAdmin = memberService.join("admin", "1234", "").getData();
             Member memberUser1 = memberService.join("user1", "1234", "").getData();
             Member memberUser2 = memberService.join("user2", "1234", "").getData();
-            Member memberUser3 = memberService.join("user3", "1234", "").getData();
+            Member memberUser3 = memberService.join("user3", "1234", "dongki1882@naver.com").getData();
             Member memberUser4 = memberService.join("user4", "1234", "").getData();
             Member memberUser5 = memberService.join("user5", "1234", "").getData();
 

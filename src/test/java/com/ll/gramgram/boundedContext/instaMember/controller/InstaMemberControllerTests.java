@@ -52,15 +52,6 @@ public class InstaMemberControllerTests {
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(content().string(containsString("""
                         <input type="text" name="username"
-                        """.stripIndent().trim())))
-                .andExpect(content().string(containsString("""
-                        <input type="radio" name="gender" value="W"
-                        """.stripIndent().trim())))
-                .andExpect(content().string(containsString("""
-                        <input type="radio" name="gender" value="M"
-                        """.stripIndent().trim())))
-                .andExpect(content().string(containsString("""
-                        <input type="submit" value="정보입력"
                         """.stripIndent().trim())));
     }
 

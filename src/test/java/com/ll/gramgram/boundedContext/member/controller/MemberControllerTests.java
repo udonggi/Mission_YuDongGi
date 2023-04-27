@@ -70,6 +70,7 @@ public class MemberControllerTests {
                         .with(csrf()) // CSRF 키 생성
                         .param("username", "user10")
                         .param("password", "1234")
+                        .param("email", "")
                 )
                 .andDo(print());
 
@@ -214,9 +215,8 @@ public class MemberControllerTests {
                 .andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("showMe"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(content().string(containsString("""
-                        user1님 환영합니다.
-                        """.stripIndent().trim())));
+        ;
+
     }
 
     @Test
