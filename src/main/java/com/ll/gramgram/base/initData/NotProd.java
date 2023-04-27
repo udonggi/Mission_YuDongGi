@@ -36,7 +36,8 @@ public class NotProd {
             instaMemberService.connect(memberUser4, "insta_user4", "M");
             instaMemberService.connect(memberUser5, "insta_user5", "M");
 
-
+            likeablePersonService.like(memberUser3, "insta_user4", 1);
+            likeablePersonService.like(memberUser3, "insta_user100", 2);
 
         };
     }
