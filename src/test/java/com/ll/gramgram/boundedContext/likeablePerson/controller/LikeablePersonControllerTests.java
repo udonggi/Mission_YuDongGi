@@ -1,6 +1,7 @@
 package com.ll.gramgram.boundedContext.likeablePerson.controller;
 
 
+import com.ll.gramgram.base.appConfig.AppConfig;
 import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRepository;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
@@ -15,6 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.IntStream;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -249,22 +253,18 @@ public class LikeablePersonControllerTests {
 
     @Test
     @DisplayName("한명의 instaMember가 11명 이상의 호감상대를 등록할 수 없다.")
-    @WithUserDetails("user3")
+    @WithUserDetails("user5")
     void t010() throws Exception{
-        Member member = rq.getMember();
-        likeablePersonService.like(member, "insta_user5", 1);
-        likeablePersonService.like(member, "insta_user6", 1);
-        likeablePersonService.like(member, "insta_user7", 1);
-        likeablePersonService.like(member, "insta_user8", 1);
-        likeablePersonService.like(member, "insta_user9", 1);
-        likeablePersonService.like(member, "insta_user10", 1);
-        likeablePersonService.like(member, "insta_user11", 1);
-        likeablePersonService.like(member, "insta_user12", 1);
+        Member memberUser5 = rq.getMember();
+        IntStream.range(0, (int) AppConfig.getLikeablePersonFromMax())
+                .forEach(index -> {
+                    likeablePersonService.like(memberUser5, "insta_userr%30d".formatted(index), 1);
+                });
         // WHEN
         ResultActions resultActions = mvc
                 .perform(post("/likeablePerson/like")  //11번째 추가
                         .with(csrf()) // CSRF 키 생성
-                        .param("username", "insta_user13")
+                        .param("username", "insta_user500")
                         .param("attractiveTypeCode", "1")
                 )
                 .andDo(print());
