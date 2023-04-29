@@ -48,11 +48,11 @@
                 <label class="label">
                     <span class="label-text">인스타 ID</span>
                 </label>
-                <input class="input input-bordered input-primary" type="text" name="username" placeholder="상대방의 인스타 ID"
+                <input class="input input-bordered input-primary" type="text" name="username" placeholder="나의 인스타 ID"
                        onchange="$(this).keyup();"
                        onkeyup="$(this).next().children(':last-child').text(this.value.trim()); $(this).next().find('a').attr('href', 'https://www.instagram.com/' + (this.value.trim()));">
                 <div class="p-3">
-                    <span>상대방 인스타 확인: </span><a href="#" target="_blank" class="link link-secondary"></a>
+                    <span>나의 인스타 확인: </span><a href="#" target="_blank" class="link link-secondary"></a>
                 </div>
             </div>
 

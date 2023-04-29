@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @Controller
-@RequestMapping("/likeablePerson")
+@RequestMapping("/usr/likeablePerson")
 @RequiredArgsConstructor
 public class LikeablePersonController {
     private final Rq rq;
@@ -45,7 +45,7 @@ public class LikeablePersonController {
             return rq.historyBack(createRsData);
         }
 
-        return rq.redirectWithMsg("/likeablePerson/list", createRsData);
+        return rq.redirectWithMsg("/usr/likeablePerson/list", createRsData);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -65,13 +65,13 @@ public class LikeablePersonController {
     @PreAuthorize("isAuthenticated()")
     @DeleteMapping("/{id}")
     public String cancel(@PathVariable("id") Long id) {
-        RsData<LikeablePerson> canDeleteRsData = likeablePersonService.cancel(id);
+        RsData<LikeablePerson> deleteRsData = likeablePersonService.cancel(id);
 
-        if (canDeleteRsData.isFail()) {
-            return rq.historyBack(canDeleteRsData);
+        if (deleteRsData.isFail()) {
+            return rq.historyBack(deleteRsData);
         }
 
-        return rq.redirectWithMsg("/likeablePerson/list", canDeleteRsData);
+        return rq.redirectWithMsg("/usr/likeablePerson/list", deleteRsData);
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -103,6 +103,6 @@ public class LikeablePersonController {
             return rq.historyBack(rsData);
         }
 
-        return rq.redirectWithMsg("/likeablePerson/list", rsData);
+        return rq.redirectWithMsg("/usr/likeablePerson/list", rsData);
     }
 }

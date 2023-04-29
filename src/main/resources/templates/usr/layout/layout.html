@@ -1,4 +1,4 @@
-<html>
+<html lang="ko">
 
 <head>
 
@@ -35,7 +35,7 @@
 <div class="min-h-screen flex flex-col">
     <header class="sticky top-0 z-50">
 
-        <div class="navbar bg-primary text-primary-content max-w-2xl mx-auto bg-base-100">
+        <div class="navbar text-primary-content max-w-2xl mx-auto bg-base-100">
             <div class="navbar-start">
                 <div class="dropdown">
                     <label tabindex="0" class="btn btn-ghost btn-circle">
@@ -46,25 +46,24 @@
                         </svg>
                     </label>
                     <ul tabindex="0"
-                        class="menu bg-primary text-primary-content menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li th:if="${@rq.logout}"><a href="/member/login"><i
+                        class="menu text-primary-content menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
+                        <li th:if="${@rq.logout}"><a href="/usr/member/login"><i
                                 class="fa-solid fa-arrow-right-to-bracket"></i>
                             로그인</a></li>
-                        <li th:if="${@rq.logout}"><a href="/member/join"><i class="fa-solid fa-user-plus"></i> 회원가입</a>
+                        <li th:if="${@rq.logout}"><a href="/usr/member/join"><i class="fa-solid fa-user-plus"></i> 회원가입</a>
                         </li>
-                        <li th:if="${@rq.login}"><a href="/member/me"><i class="fa-solid fa-user"></i> 내 정보</a></li>
+                        <li th:if="${@rq.login}"><a href="/usr/member/me"><i class="fa-solid fa-user"></i> 내 정보</a></li>
                         <li th:if="${@rq.login}">
                             <a href="javascript:;" onclick="$(this).next().submit();"><i
                                     class="fa-solid fa-arrow-right-from-bracket"></i> 로그아웃</a>
-                            <form class="!hidden" th:action="|/member/logout|" method="POST"></form>
+                            <form class="!hidden" th:action="|/usr/member/logout|" method="POST"></form>
                         </li>
-                        <li th:if="${@rq.login}"><a href="/instaMember/connect"><i class="fa-brands fa-instagram"></i>
-                            인스타
-                            ID 등록</a></li>
-                        <li th:if="${@rq.login}"><a href="/likeablePerson/like"><i
+                        <li th:if="${@rq.login}"><a href="/usr/instaMember/connect"><i class="fa-brands fa-instagram"></i>
+                            인스타 ID 등록</a></li>
+                        <li th:if="${@rq.login}"><a href="/usr/likeablePerson/like"><i
                                 class="fa-solid fa-heart-circle-plus"></i>
                             호감표시</a></li>
-                        <li th:if="${@rq.login}"><a href="/likeablePerson/list"><i class="fa-solid fa-list-ol"></i> 호감목록</a>
+                        <li th:if="${@rq.login}"><a href="/usr/likeablePerson/list"><i class="fa-solid fa-list-ol"></i> 호감목록</a>
                         </li>
                     </ul>
                 </div>
@@ -78,13 +77,10 @@
                 <a href="/" class="btn btn-ghost normal-case text-xl">GRAMGRAM</a>
             </div>
             <div class="navbar-end">
-                <button class="btn btn-ghost btn-circle">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                         stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                    </svg>
-                </button>
+                <a href="/usr/member/me" class="btn btn-ghost gap-1" th:if="${@rq.login}">
+                    <i class="fa-solid fa-user"></i>
+                    <span th:text="${@rq.member.nickname}"></span>
+                </a>
                 <button class="btn btn-ghost btn-circle">
                     <div class="indicator">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
