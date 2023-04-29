@@ -1,12 +1,12 @@
 <html layout:decorate="~{usr/layout/layout.html}">
 
 <head>
-    <title>본인의 인스타그램 정보입력</title>
+    <title>인스타 ID 입력</title>
 </head>
 
 <body>
 
-<main layout:fragment="main">
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
     <script>
         function ConnectForm__submit(form) {
             // username 이(가) 올바른지 체크
@@ -37,45 +37,52 @@
         }
     </script>
 
-    <div class="flex justify-center">
-        <form th:action method="POST" class="p-10 max-w-sm flex flex-col gap-4"
-              onsubmit="ConnectForm__submit(this); return false;">
-            <h1 class="mb-1">
-                <i class="fa-brands fa-instagram"></i>
-                인스타ID 인증
-            </h1>
-            <div>
-                <input type="text" name="username" maxlength="30" placeholder="인스타그램 ID"
-                       class="input input-bordered">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-brands fa-instagram"></i>
+            인스타 ID 입력
+        </h1>
+
+        <form class="flex flex-col gap-6" method="POST" th:action onsubmit="ConnectForm__submit(this); return false;">
+            <div class="form-control">
+                <label class="label">
+                    <span class="label-text">인스타 ID</span>
+                </label>
+                <input class="input input-bordered input-primary" type="text" name="username" placeholder="상대방의 인스타 ID"
+                       onchange="$(this).keyup();"
+                       onkeyup="$(this).next().children(':last-child').text(this.value.trim()); $(this).next().find('a').attr('href', 'https://www.instagram.com/' + (this.value.trim()));">
+                <div class="p-3">
+                    <span>상대방 인스타 확인: </span><a href="#" target="_blank" class="link link-secondary"></a>
+                </div>
             </div>
+
             <div class="form-control">
                 <label class="label">
                     <span class="label-text">성별</span>
                 </label>
-
-
+                <!-- 라벨을 클릭하면 라벨의 하위요소인 버튼(체크,라디오,일반 등)이 클릭되는 효과) -->
                 <div class="flex justify-center gap-4">
                     <label class="flex gap-2 items-center cursor-pointer">
-                        <input class="radio radio-secondary" type="radio" name="gender" value="W">
-                        <span class="text-[color:#FFC0CB]">
-                            <i class="fa-solid fa-person-dress text-[color:#FFC0CB]"></i>
+                        <input type="radio" name="gender" value="W" class="radio peer">
+                        <span class="text-gray-400 peer-checked:text-gray-900 peer-checked:font-bold peer-focus:text-gray-700">
+                            <i class="fa-solid fa-person-dress"></i>
                             여성
                         </span>
                     </label>
-
                     <label class="flex gap-2 items-center cursor-pointer">
-                        <input class="radio radio-info" type="radio" name="gender" value="M">
-                        <span class="text-[color:#87CEEB]">
-                                <i class="fa-solid fa-person text-[color:#87CEEB]"></i>
-                                 남성
-                             </span>
+                        <input type="radio" name="gender" value="M" class="radio peer">
+                        <span class="text-gray-400 peer-checked:text-gray-900 peer-checked:font-bold peer-focus:text-gray-700">
+                            <i class="fa-solid fa-person"></i>
+                            남성
+                        </span>
                     </label>
                 </div>
+            </div>
 
-            </div>
-            <div>
-                <input type="submit" value="인스타ID 인증" class="btn btn-block btn-primary">
-            </div>
+            <button id="btn-insta-member-connect-1" class="btn btn-block btn-primary gap-1">
+                <i class="fa-brands fa-instagram"></i>
+                <span>인스타 ID 입력</span>
+            </button>
         </form>
     </div>
 </main>
