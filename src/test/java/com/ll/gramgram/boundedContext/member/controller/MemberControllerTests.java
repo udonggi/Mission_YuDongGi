@@ -201,7 +201,7 @@ public class MemberControllerTests {
 
     @Test
     // @Rollback(value = false) // DB에 흔적이 남는다.
-    @DisplayName("로그인 후에 내비바에 로그인한 회원의 username")
+    @DisplayName("로그인 후에 내정보 클릭시 아이디 입력하라 메세지 나온다.")
     @WithUserDetails("user1")
         // user1로 로그인 한 상태로 진행
     void t006() throws Exception {
@@ -214,7 +214,7 @@ public class MemberControllerTests {
         resultActions
                 .andExpect(handler().handlerType(MemberController.class))
                 .andExpect(handler().methodName("showMe"))
-                .andExpect(status().is2xxSuccessful())
+                .andExpect(status().is4xxClientError())
         ;
 
     }
