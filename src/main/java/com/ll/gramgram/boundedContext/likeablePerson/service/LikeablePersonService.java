@@ -74,7 +74,7 @@ public class LikeablePersonService {
             if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
             } else {
-                likeablePerson.get().setAttractiveTypeCode(attractiveTypeCode);
+                likeablePerson.get().updateAttractionTypeCode(attractiveTypeCode);
                 return RsData.of("S-2", "%s에 대한 호감사유를 변경하였습니다.".formatted(username));
             }
         }
@@ -128,7 +128,7 @@ public class LikeablePersonService {
             return canModifyRsData;
         }
 
-        likeablePerson.setAttractiveTypeCode(attractiveTypeCode);
+        likeablePerson.updateAttractionTypeCode(attractiveTypeCode);
 
         return RsData.of("S-1", "호감사유를 수정하였습니다.");
     }
