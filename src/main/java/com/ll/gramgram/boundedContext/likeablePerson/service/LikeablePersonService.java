@@ -62,6 +62,8 @@ public class LikeablePersonService {
         fromInstaMember.addFromLikeablePerson(likeablePerson); // 내가 호감을 표시한 사람을 추가
         toInstaMember.addToLikeablePerson(likeablePerson); // 나에게 호감을 받은 사람을 추가
 
+        toInstaMember.increaseLikesCount(fromInstaMember.getGender(), attractiveTypeCode);
+
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
@@ -97,6 +99,9 @@ public class LikeablePersonService {
         if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId()) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
+
+        likeablePerson.getToInstaMember().decreaseLikesCount(likeablePerson.getFromInstaMember().getGender(), likeablePerson.getAttractiveTypeCode());
+
 
         // 너가 생성한 좋아요가 사라졌어.
         likeablePerson.getFromInstaMember().removeFromLikeablePerson(likeablePerson);
