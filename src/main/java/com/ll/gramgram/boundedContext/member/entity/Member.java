@@ -35,6 +35,10 @@ public class Member extends BaseEntity {
     @Setter // memberService::updateInstaMember 함수 때문에
     private InstaMember instaMember;
 
+    public boolean isAdmin() {
+        return "admin".equals(username);
+    }
+
     // 이 함수 자체는 만들어야 한다. 스프링 시큐리티 규격
     public List<? extends GrantedAuthority> getGrantedAuthorities() {
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
@@ -43,7 +47,7 @@ public class Member extends BaseEntity {
         grantedAuthorities.add(new SimpleGrantedAuthority("member"));
 
         // username이 admin인 회원은 추가로 admin 권한도 가진다.
-        if ("admin".equals(username)) {
+        if (isAdmin()) {
             grantedAuthorities.add(new SimpleGrantedAuthority("admin"));
         }
 
