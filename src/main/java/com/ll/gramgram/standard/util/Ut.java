@@ -2,13 +2,11 @@ package com.ll.gramgram.standard.util;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class Ut {
-
     public static class hash {
         private static final MessageDigest md;
 
@@ -29,6 +27,7 @@ public class Ut {
             return Base64.getEncoder().encodeToString(hashBytes);
         }
     }
+
     public static class url {
         public static String encode(String str) {
             return URLEncoder.encode(str, StandardCharsets.UTF_8);

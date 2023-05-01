@@ -59,6 +59,7 @@ public class LikeablePersonService {
                 .toInstaMember(toInstaMember) // 호감을 받는 사람의 인스타 멤버
                 .toInstaMemberUsername(toInstaMember.getUsername()) // 중요하지 않음
                 .attractiveTypeCode(attractiveTypeCode) // 1=외모, 2=능력, 3=성격
+                .modifyUnlockDate(AppConfig.genLikeablePersonModifyUnlockDate())
                 .build();
 
         likeablePersonRepository.save(likeablePerson); // 저장
@@ -67,7 +68,7 @@ public class LikeablePersonService {
         fromInstaMember.addFromLikeablePerson(likeablePerson); // 내가 호감을 표시한 사람을 추가
         toInstaMember.addToLikeablePerson(likeablePerson); // 나에게 호감을 받은 사람을 추가
 
-        publisher.publishEvent(new EventAfterLike(this, likeablePerson));
+        publisher.publishEvent(new EventAfterLike(likeablePerson));
 
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
@@ -106,7 +107,7 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
-        publisher.publishEvent(new EventBeforeCancelLike(this, likeablePerson));
+        publisher.publishEvent(new EventBeforeCancelLike( likeablePerson));
 
 
         // 너가 생성한 좋아요가 사라졌어.
@@ -144,7 +145,7 @@ public class LikeablePersonService {
         RsData rsData = likeablePerson.updateAttractionTypeCode(attractiveTypeCode);
 
         if (rsData.isSuccess()) {
-            publisher.publishEvent(new EventAfterModifyAttractiveType(this, likeablePerson, oldAttractiveTypeCode, attractiveTypeCode));
+            publisher.publishEvent(new EventAfterModifyAttractiveType(likeablePerson, oldAttractiveTypeCode, attractiveTypeCode));
         }
     }
 

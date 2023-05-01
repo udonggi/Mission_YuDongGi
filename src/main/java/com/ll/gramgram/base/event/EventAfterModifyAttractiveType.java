@@ -5,12 +5,11 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class EventAfterModifyAttractiveType extends ApplicationEvent {
+public class EventAfterModifyAttractiveType {
     private final LikeablePerson likeablePerson;
     private final int oldAttractiveTypeCode;
 
-    public EventAfterModifyAttractiveType(Object source, LikeablePerson likeablePerson, int oldAttractiveTypeCode, int newAttractiveTypeCode) {
-        super(source);
+    public EventAfterModifyAttractiveType( LikeablePerson likeablePerson, int oldAttractiveTypeCode, int newAttractiveTypeCode) {
         this.likeablePerson = likeablePerson;
         this.oldAttractiveTypeCode = oldAttractiveTypeCode;
     }

@@ -7,7 +7,9 @@ import com.ll.gramgram.boundedContext.likeablePerson.repository.LikeablePersonRe
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import com.ll.gramgram.boundedContext.member.entity.Member;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,6 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @Transactional
 @ActiveProfiles("test")
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class LikeablePersonControllerTests {
     @Autowired
     private MockMvc mvc;
@@ -336,6 +339,13 @@ public class LikeablePersonControllerTests {
                 .andExpect(handler().methodName("modify"))
                 .andExpect(status().is3xxRedirection());
         ;
+    }
+
+    @Test
+    @DisplayName("설정파일에서 호감표시에 대한 수정쿨타임 가져오기")
+    void t016() throws Exception {
+        System.out.println("likeablePersonModifyCoolTime : " + AppConfig.getLikeablePersonModifyCoolTime());
+        assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
     }
 
 

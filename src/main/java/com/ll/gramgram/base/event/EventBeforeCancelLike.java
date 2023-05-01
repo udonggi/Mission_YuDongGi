@@ -5,11 +5,10 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class EventBeforeCancelLike extends ApplicationEvent {
+public class EventBeforeCancelLike {
     private final LikeablePerson likeablePerson;
 
-    public EventBeforeCancelLike(Object source, LikeablePerson likeablePerson) {
-        super(source);
+    public EventBeforeCancelLike(LikeablePerson likeablePerson) {
         this.likeablePerson = likeablePerson;
     }
 }
