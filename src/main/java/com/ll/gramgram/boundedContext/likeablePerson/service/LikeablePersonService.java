@@ -42,7 +42,7 @@ public class LikeablePersonService {
 
         InstaMember fromInstaMember = member.getInstaMember();
 
-        RsData<LikeablePerson> likeDuplicateRsData = checkAttractionAndUpdate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
+        RsData<LikeablePerson> likeDuplicateRsData = checkAttractiveAndUpdate(username, attractiveTypeCode, fromInstaMember); // 호감 중복체크
         if (likeDuplicateRsData != null) return likeDuplicateRsData;
 
         if (member.getInstaMember().getFromLikeablePeople().size() >= AppConfig.getLikeablePersonFromMax()) { //변경 밑에 있는 이유는 변경은 가능하게 해야 하므로
@@ -72,7 +72,7 @@ public class LikeablePersonService {
         return RsData.of("S-1", "입력하신 인스타유저(%s)를 호감상대로 등록되었습니다.".formatted(username), likeablePerson);
     }
 
-    private RsData<LikeablePerson> checkAttractionAndUpdate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
+    private RsData<LikeablePerson> checkAttractiveAndUpdate(String username, int attractiveTypeCode, InstaMember fromInstaMember) {
         Optional<LikeablePerson> likeablePerson = likeablePersonRepository.findByFromInstaMemberAndToInstaMember_username(fromInstaMember, username);
 
 
@@ -126,9 +126,9 @@ public class LikeablePersonService {
     }
 
     @Transactional
-    public RsData<LikeablePerson> modifyLike(Member actor, Long id, int attractiveTypeCode) {
+    public RsData<LikeablePerson> modifyAttractiveAtList(Member actor, Long id, int attractiveTypeCode) {
         LikeablePerson likeablePerson = findById(id).orElseThrow();
-        RsData canModifyRsData = canModifyLike(actor, likeablePerson);
+        RsData canModifyRsData = canModifyAttractiveAtList(actor, likeablePerson);
 
         if (canModifyRsData.isFail()) {
             return canModifyRsData;
@@ -148,7 +148,7 @@ public class LikeablePersonService {
         }
     }
 
-    public RsData canModifyLike(Member actor, LikeablePerson likeablePerson) {
+    public RsData canModifyAttractiveAtList(Member actor, LikeablePerson likeablePerson) {
         if (!actor.hasConnectedInstaMember()) {
             return RsData.of("F-1", "먼저 본인의 인스타그램 아이디를 입력해주세요.");
         }
