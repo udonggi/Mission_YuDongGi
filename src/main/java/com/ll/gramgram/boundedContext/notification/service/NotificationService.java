@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -53,5 +54,15 @@ public class NotificationService {
                 .build();
 
         notificationRepository.save(notification);
+    }
+
+    @Transactional
+    public void updateReadDate(List<Notification> notifications, LocalDateTime now) {
+        //알림 읽으면 readDate 읽은 시간으로 세팅
+        notifications.forEach(notification -> {
+            if(notification.getReadDate() == null) {
+                notification.setReadDate(LocalDateTime.now());
+            }
+        });
     }
 }

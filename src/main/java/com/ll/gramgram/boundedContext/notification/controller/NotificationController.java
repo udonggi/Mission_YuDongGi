@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -27,8 +28,10 @@ public class NotificationController {
         }
 
         List<Notification> notifications = notificationService.findByToInstaMember(rq.getMember().getInstaMember());
-
+        notificationService.updateReadDate(notifications, LocalDateTime.now());
         model.addAttribute("notifications", notifications);
+
+
 
         return "usr/notification/list";
     }
