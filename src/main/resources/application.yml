@@ -29,6 +29,6 @@ logging:
 
 custom:
   likeablePerson:
-    modifyCoolTime: '#{5}'
+    modifyCoolTime: '#{10}'
     from:
       max: 10
