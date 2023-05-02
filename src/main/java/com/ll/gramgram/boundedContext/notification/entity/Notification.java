@@ -11,6 +11,7 @@ import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Getter
@@ -30,4 +31,35 @@ public class Notification extends BaseEntity {
     private String gender; // 해당사항 없으면 null
     private int oldAttractiveTypeCode; // 해당사항 없으면 0
     private int newAttractiveTypeCode; // 해당사항 없으면 0
+
+    public String getNotificationDateStr() {
+        return "%s분전".formatted(ChronoUnit.MINUTES.between(this.getCreateDate(), LocalDateTime.now()));
+    }
+
+    public boolean isTypeCodeLike() {
+        return typeCode.equals("Like");
+    }
+
+    public String getNewAttractiveTypeDisplayName() {
+        return switch (newAttractiveTypeCode) {
+            case 1 -> "외모";
+            case 2 -> "성격";
+            default -> "능력";
+        };
+    }
+
+    public String getOldAttractiveTypeDisplayName() {
+        return switch (oldAttractiveTypeCode) {
+            case 1 -> "외모";
+            case 2 -> "성격";
+            default -> "능력";
+        };
+    }
+
+    public String getGenderDisplayName() {
+        return switch (gender) {
+            case "W" -> "여성";
+            default -> "남성";
+        };
+    }
 }
