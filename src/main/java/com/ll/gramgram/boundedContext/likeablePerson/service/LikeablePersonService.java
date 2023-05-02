@@ -110,6 +110,10 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
+        if(canCancel()) {
+            return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
+        }
+
         publisher.publishEvent(new EventBeforeCancelLike( likeablePerson));
 
 
@@ -123,6 +127,7 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "해당 호감상대가 삭제되었습니다.", likeablePerson);
     }
+
 
 
     public Optional<LikeablePerson> findById(Long id) {
@@ -172,6 +177,10 @@ public class LikeablePersonService {
     }
 
     private boolean canLike() {
+        return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
+    }
+
+    private boolean canCancel() {
         return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
     }
 
