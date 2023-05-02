@@ -15,6 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile({"dev", "test"})
 public class NotProd {
 
+    @Value("${custom.security.oauth2.client.registration.kakao.devUserOauthId}")
+    private String kakaoDevUserOAuthId;
+
+    @Value("${custom.security.oauth2.client.registration.naver.devUserOauthId}")
+    private String naverDevUserOAuthId;
+
+    @Value("${custom.security.oauth2.client.registration.google.devUserOauthId}")
+    private String googleDevUserOAuthId;
+
+    @Value("${custom.security.oauth2.client.registration.facebook.devUserOauthId}")
+    private String facebookDevUserOAuthId;
+
 
     @Bean
     CommandLineRunner initData(
@@ -34,10 +46,10 @@ public class NotProd {
                 Member memberUser5 = memberService.join("user5", "1234", "").getData();
 
 
-                Member memberUser6ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__2733176712").getData();
-                Member memberUser7ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__101539669540183516919").getData();
-                Member memberUser8ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__KvykG_FvNSMl9etrRX__1NZb-LQRki99oMdQelcMbBg").getData();
-                Member memberUser9ByFacebook = memberService.whenSocialLogin("FACEBOOK", "FACEBOOK__104255525999749").getData();
+                Member memberUser6ByKakao = memberService.whenSocialLogin("KAKAO", "KAKAO__%s".formatted(kakaoDevUserOAuthId)).getData();
+                Member memberUser7ByGoogle = memberService.whenSocialLogin("GOOGLE", "GOOGLE__%s".formatted(googleDevUserOAuthId)).getData();
+                Member memberUser8ByNaver = memberService.whenSocialLogin("NAVER", "NAVER__%s".formatted(naverDevUserOAuthId)).getData();
+                Member memberUser9ByFacebook = memberService.whenSocialLogin("FACEBOOK", "FACEBOOK__%s".formatted(facebookDevUserOAuthId)).getData();
 
 
                 instaMemberService.connect(memberUser2, "insta_user2", "M");
