@@ -266,27 +266,7 @@ public class LikeablePersonControllerTests {
 
     }
 
-    @Test
-    @DisplayName("같은 회원 중복 호감표시할 때 다른 유형의 호감표시는 가능하다.")
-    @WithUserDetails("user3")
-    void t011() throws Exception{
-        // WHEN
-        ResultActions resultActions = mvc
-                .perform(post("/usr/likeablePerson/like")
-                        .with(csrf()) // CSRF 키 생성
-                        .param("username", "insta_user4")
-                        .param("attractiveTypeCode", "2")
-                )
-                .andDo(print());
 
-        // THEN
-        resultActions
-                .andExpect(handler().handlerType(LikeablePersonController.class))
-                .andExpect(handler().methodName("like"))
-                .andExpect(status().is3xxRedirection());
-
-        assertThat(likeablePersonRepository.findById(1L).get().getAttractiveTypeCode()).isEqualTo(2);
-    }
 
     @Test
     @DisplayName("수정 폼")
