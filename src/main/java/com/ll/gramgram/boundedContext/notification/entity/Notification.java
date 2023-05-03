@@ -40,6 +40,10 @@ public class Notification extends BaseEntity {
         return typeCode.equals("Like");
     }
 
+    public boolean isTypeCodeModifyAttractiveType() {
+        return typeCode.equals("ModifyAttractiveType");
+    }
+
     public String getNewAttractiveTypeDisplayName() {
         return switch (newAttractiveTypeCode) {
             case 1 -> "외모";
