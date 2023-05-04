@@ -110,7 +110,7 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
-        if(canCancel()) {
+        if(!canCancel()) {
             return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
         }
 
@@ -168,7 +168,7 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감표시를 취소할 권한이 없습니다.");
         }
 
-        if (canLike()) {
+        if (!canLike()) {
             return RsData.of("F-5", "호감사유를 수정할 수 있는 기간이 아닙니다.");
         }
 

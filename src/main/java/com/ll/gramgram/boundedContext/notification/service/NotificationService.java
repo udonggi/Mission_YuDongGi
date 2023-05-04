@@ -57,7 +57,7 @@ public class NotificationService {
     }
 
     @Transactional
-    public void updateReadDate(List<Notification> notifications, LocalDateTime now) {
+    public void updateReadDate(List<Notification> notifications) {
         //알림 읽으면 readDate 읽은 시간으로 세팅
         notifications.forEach(notification -> {
             if(notification.getReadDate() == null) {

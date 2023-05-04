@@ -12,11 +12,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class InstaMemberEventListener {
     private final InstaMemberService instaMemberService;
 
     @EventListener
-    @Transactional
     public void listen(EventAfterModifyAttractiveType event) {
         instaMemberService.whenAfterModifyAttractiveType(event.getLikeablePerson(), event.getOldAttractiveTypeCode());
     }
