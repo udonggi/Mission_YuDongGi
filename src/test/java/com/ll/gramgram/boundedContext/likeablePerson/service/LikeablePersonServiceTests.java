@@ -74,7 +74,7 @@ public class LikeablePersonServiceTests {
 
         // 갱신 되었는지 확인
         assertThat(
-                likeablePersonToBts.getModifyUnlockDate().isAfter(coolTime)
+                likeablePersonToBts.getModifyUnlockDate().isBefore(coolTime)
         ).isTrue();
     }
 }
