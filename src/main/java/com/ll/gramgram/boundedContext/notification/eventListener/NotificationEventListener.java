@@ -1,4 +1,4 @@
-package com.ll.gramgram.boundedContext.instaMember.eventListener;
+package com.ll.gramgram.boundedContext.notification.eventListener;
 
 import com.ll.gramgram.base.event.EventAfterFromInstaMemberChangeGender;
 import com.ll.gramgram.base.event.EventAfterLike;
@@ -14,18 +14,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
+@Transactional
 public class NotificationEventListener {
     private final NotificationService notificationService;
 
     @EventListener
-    @Transactional
     public void listen(EventAfterModifyAttractiveType event) {
         notificationService.whenAfterModifyAttractiveType(event.getLikeablePerson(), event.getOldAttractiveTypeCode());
     }
 
     @EventListener
-    @Transactional
     public void listen(EventAfterLike event) {
         notificationService.whenAfterLike(event.getLikeablePerson());
     }
