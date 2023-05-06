@@ -1,6 +1,7 @@
 package com.ll.gramgram.boundedContext.notification.service;
 
 
+import com.ll.gramgram.base.rq.Rq;
 import com.ll.gramgram.boundedContext.likeablePerson.entity.LikeablePerson;
 import com.ll.gramgram.boundedContext.likeablePerson.service.LikeablePersonService;
 import com.ll.gramgram.boundedContext.member.entity.Member;
@@ -12,7 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -30,6 +34,8 @@ public class NotificationServiceTests {
     private LikeablePersonService likeablePersonService;
     @Autowired
     private NotificationService notificationService;
+    @Autowired
+    private Rq rq;
 
     @Test
     @DisplayName("호감표시한 후 생성된 알림 확인하기")
@@ -70,4 +76,5 @@ public class NotificationServiceTests {
         assertThat(lastNotification.getOldAttractiveTypeCode()).isEqualTo(1);
         assertThat(lastNotification.getNewAttractiveTypeCode()).isEqualTo(2);
     }
+
 }
