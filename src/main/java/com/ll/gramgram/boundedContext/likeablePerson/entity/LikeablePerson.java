@@ -49,7 +49,7 @@ public class LikeablePerson extends BaseEntity {
         );
     }
 
-    public RsData updateAttractionTypeCode(int attractiveTypeCode) {
+    public RsData<LikeablePerson> updateAttractionTypeCode(int attractiveTypeCode) {
         if (this.attractiveTypeCode == attractiveTypeCode) {
             return RsData.of("F-1", "이미 설정되었습니다.");
         }

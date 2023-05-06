@@ -81,11 +81,11 @@ public class LikeablePersonService {
         if (likeablePerson.isPresent()) {
             if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
-            } else if(canLike()) {
+            } else if(!likeablePerson.get().isModifyUnlocked()) {
+                return RsData.of("F-5", "호감사유를 변경할 수 있는 기간이 아닙니다.");
+            } else {
                 modifyAttractionTypeCode(likeablePerson.get(), attractiveTypeCode);
                 return RsData.of("S-2", "%s에 대한 호감사유를 변경하였습니다.".formatted(username));
-            } else {
-                return RsData.of("F-5", "호감사유를 변경할 수 있는 기간이 아닙니다.");
             }
         }
         return null;
@@ -106,13 +106,9 @@ public class LikeablePersonService {
 
         LikeablePerson likeablePerson = person.get();
 
-        if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId()) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
-            return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
-        }
-
-        if(!canCancel()) {
-            return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
-        }
+        RsData<LikeablePerson> canCancelRsData = canCancel(likeablePerson);
+        if (canCancelRsData.isFail())
+            return canCancelRsData;
 
         publisher.publishEvent(new EventBeforeCancelLike( likeablePerson));
 
@@ -128,6 +124,16 @@ public class LikeablePersonService {
         return RsData.of("S-1", "해당 호감상대가 삭제되었습니다.", likeablePerson);
     }
 
+    private RsData<LikeablePerson> canCancel(LikeablePerson likeablePerson) {
+        if (likeablePerson.getFromInstaMember().getId() != rq.getMember().getInstaMember().getId()) { //수정: rq클래스를 활용하여 현재 로그인한 멤버의 인스타멤버 아이디를 가져옴
+            return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
+        }
+
+        if(!likeablePerson.isModifyUnlocked()) {
+            return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
+        }
+        return RsData.of("S-1", "호감상대를 삭제할 수 있습니다.");
+    }
 
 
     public Optional<LikeablePerson> findById(Long id) {
@@ -137,7 +143,7 @@ public class LikeablePersonService {
     @Transactional
     public RsData<LikeablePerson> modifyAttractiveAtList(Member actor, Long id, int attractiveTypeCode) {
         LikeablePerson likeablePerson = findById(id).orElseThrow();
-        RsData canModifyRsData = canModifyAttractiveAtList(actor, likeablePerson);
+        RsData<LikeablePerson> canModifyRsData = canModifyAttractiveAtList(actor, likeablePerson);
 
         if (canModifyRsData.isFail()) {
             return canModifyRsData;
@@ -150,14 +156,14 @@ public class LikeablePersonService {
 
     private void modifyAttractionTypeCode(LikeablePerson likeablePerson, int attractiveTypeCode) {
         int oldAttractiveTypeCode = likeablePerson.getAttractiveTypeCode();
-        RsData rsData = likeablePerson.updateAttractionTypeCode(attractiveTypeCode);
+        RsData<LikeablePerson> rsData = likeablePerson.updateAttractionTypeCode(attractiveTypeCode);
 
         if (rsData.isSuccess()) {
             publisher.publishEvent(new EventAfterModifyAttractiveType(likeablePerson, oldAttractiveTypeCode, attractiveTypeCode));
         }
     }
 
-    public RsData canModifyAttractiveAtList(Member actor, LikeablePerson likeablePerson) {
+    public RsData<LikeablePerson> canModifyAttractiveAtList(Member actor, LikeablePerson likeablePerson) {
         if (!actor.hasConnectedInstaMember()) {
             return RsData.of("F-1", "먼저 본인의 인스타그램 아이디를 입력해주세요.");
         }
@@ -168,7 +174,7 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감표시를 취소할 권한이 없습니다.");
         }
 
-        if (!canLike()) {
+        if (!likeablePerson.isModifyUnlocked()) {
             return RsData.of("F-5", "호감사유를 수정할 수 있는 기간이 아닙니다.");
         }
 
@@ -176,13 +182,6 @@ public class LikeablePersonService {
         return RsData.of("S-1", "호감표시취소가 가능합니다.");
     }
 
-    private boolean canLike() {
-        return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
-    }
-
-    private boolean canCancel() {
-        return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
-    }
 
 
 }
