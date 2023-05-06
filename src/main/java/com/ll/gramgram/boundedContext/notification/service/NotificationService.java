@@ -23,33 +23,25 @@ public class NotificationService {
 
     @Transactional
     public void whenAfterModifyAttractiveType(LikeablePerson likeablePerson, int oldAttractiveTypeCode) {
-        InstaMember toInstaMember = likeablePerson.getToInstaMember();
-        InstaMember fromInstaMember = likeablePerson.getFromInstaMember();
+        make(likeablePerson, "ModifyAttractiveType", oldAttractiveTypeCode);
 
-        Notification notification = Notification.builder()
-                .toInstaMember(toInstaMember)
-                .fromInstaMember(fromInstaMember)
-                .readDate(null)
-                .gender(fromInstaMember.getGender())
-                .typeCode("ModifyAttractiveType")
-                .oldAttractiveTypeCode(oldAttractiveTypeCode)
-                .newAttractiveTypeCode(likeablePerson.getAttractiveTypeCode())
-                .build();
-
-        notificationRepository.save(notification);
     }
 
     @Transactional
     public void whenAfterLike(LikeablePerson likeablePerson) {
+        make(likeablePerson, "Like", 0);
+    }
+
+    private void make(LikeablePerson likeablePerson, String typeCode, int oldAttractiveTypeCode) {
         InstaMember toInstaMember = likeablePerson.getToInstaMember();
         InstaMember fromInstaMember = likeablePerson.getFromInstaMember();
-
         Notification notification = Notification.builder()
                 .toInstaMember(toInstaMember)
                 .fromInstaMember(fromInstaMember)
                 .readDate(null)
                 .gender(fromInstaMember.getGender())
-                .typeCode("Like")
+                .typeCode(typeCode)
+                .oldAttractiveTypeCode(oldAttractiveTypeCode)
                 .newAttractiveTypeCode(likeablePerson.getAttractiveTypeCode())
                 .build();
 
