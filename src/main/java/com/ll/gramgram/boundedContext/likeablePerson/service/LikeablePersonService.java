@@ -16,6 +16,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -80,9 +81,11 @@ public class LikeablePersonService {
         if (likeablePerson.isPresent()) {
             if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
-            } else {
+            } else if(canLike()) {
                 modifyAttractionTypeCode(likeablePerson.get(), attractiveTypeCode);
                 return RsData.of("S-2", "%s에 대한 호감사유를 변경하였습니다.".formatted(username));
+            } else {
+                return RsData.of("F-5", "호감사유를 변경할 수 있는 기간이 아닙니다.");
             }
         }
         return null;
@@ -107,6 +110,10 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
+        if(!canCancel()) {
+            return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
+        }
+
         publisher.publishEvent(new EventBeforeCancelLike( likeablePerson));
 
 
@@ -120,6 +127,7 @@ public class LikeablePersonService {
 
         return RsData.of("S-1", "해당 호감상대가 삭제되었습니다.", likeablePerson);
     }
+
 
 
     public Optional<LikeablePerson> findById(Long id) {
@@ -160,7 +168,21 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감표시를 취소할 권한이 없습니다.");
         }
 
+        if (!canLike()) {
+            return RsData.of("F-5", "호감사유를 수정할 수 있는 기간이 아닙니다.");
+        }
+
 
         return RsData.of("S-1", "호감표시취소가 가능합니다.");
     }
+
+    private boolean canLike() {
+        return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
+    }
+
+    private boolean canCancel() {
+        return LocalDateTime.now().isAfter(AppConfig.genLikeablePersonModifyUnlockDate());
+    }
+
+
 }

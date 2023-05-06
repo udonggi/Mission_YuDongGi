@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -23,12 +24,14 @@ public class NotificationController {
     @PreAuthorize("isAuthenticated()")
     public String showList(Model model) {
         if (!rq.getMember().hasConnectedInstaMember()) {
-            return rq.redirectWithMsg("/usr/instaMember/connect", "먼저 본인의 인스타그램 아이디를 입력해주세요.");
+            return rq.redirectWithMsg("/usr/instaMember/connectByApi", "먼저 본인의 인스타그램 아이디를 입력해주세요.");
         }
 
         List<Notification> notifications = notificationService.findByToInstaMember(rq.getMember().getInstaMember());
-
+        notificationService.updateReadDate(notifications);
         model.addAttribute("notifications", notifications);
+
+
 
         return "usr/notification/list";
     }
