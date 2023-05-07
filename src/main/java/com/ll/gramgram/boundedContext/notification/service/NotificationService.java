@@ -57,4 +57,9 @@ public class NotificationService {
             }
         });
     }
+
+//    public boolean countUnreadNotificationsByToInstaMember(InstaMember instaMember) {
+//        return notificationRepository.countByToInstaMemberAndReadDateIsNull(instaMember) > 0;
+//    } // 안 읽은 알림 체크할때 사용하는데 나중에 속도 더 빠른거로 바꾸기
+
 }

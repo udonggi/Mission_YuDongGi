@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
     List<Notification> findByToInstaMember(InstaMember toInstaMember);
+
+//    int countByToInstaMemberAndReadDateIsNull(InstaMember instaMember); //나중에 쓸 수 있음 (안읽은 알림 개수)
 }
