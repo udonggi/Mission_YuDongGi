@@ -33,7 +33,7 @@ public class Notification extends BaseEntity {
     private int newAttractiveTypeCode; // 해당사항 없으면 0
 
     public String getNotificationDateStr() {
-        return "%s분전".formatted(ChronoUnit.MINUTES.between(this.getCreateDate(), LocalDateTime.now()));
+        return "%s분 %s초전".formatted(ChronoUnit.MINUTES.between(this.getCreateDate(), LocalDateTime.now()), ChronoUnit.SECONDS.between(this.getCreateDate(), LocalDateTime.now()) % 60);
     }
 
     public boolean isTypeCodeLike() {
@@ -65,5 +65,10 @@ public class Notification extends BaseEntity {
             case "W" -> "여성";
             default -> "남성";
         };
+    }
+
+    public boolean isHot() {
+        // 만들어진지 10분이 안되었다면 hot 으로 설정
+        return getCreateDate().isAfter(LocalDateTime.now().minusMinutes(10));
     }
 }

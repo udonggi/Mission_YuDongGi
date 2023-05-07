@@ -61,7 +61,7 @@ public class NotificationControllerTests {
     }
 
     @Test
-    @DisplayName("아직 읽지 않은 알림이 있을 때 상단바에 인디케이터 표시")
+    @DisplayName("읽지 않은 알림이 있을 때 상단바에 인디케이터 표시")
     @WithUserDetails("user4")
     void t002() throws Exception {
         // WHEN
