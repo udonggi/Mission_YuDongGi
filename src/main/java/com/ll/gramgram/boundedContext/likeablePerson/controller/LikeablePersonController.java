@@ -136,7 +136,7 @@ public class LikeablePersonController {
     @Getter
     public static class ToListForm {
         private final String gender;
-        private final String attractiveType;
+        private final String attractiveTypeCode;
         private final String sortCode;
     }
 
@@ -147,7 +147,7 @@ public class LikeablePersonController {
         List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
 
         // 필터링
-        likeablePeople = likeablePersonService.toListFilter(likeablePeople, toListForm.getGender(), toListForm.getAttractiveType(), toListForm.getSortCode());
+        likeablePeople = likeablePersonService.toListFilter(likeablePeople, toListForm.getGender(), toListForm.getAttractiveTypeCode(), toListForm.getSortCode());
 
         model.addAttribute("likeablePeople", likeablePeople);
 

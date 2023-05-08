@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -186,13 +187,13 @@ public class LikeablePersonService {
 
     public List<LikeablePerson> toListFilter(List<LikeablePerson> likeablePeople, String gender, String attractiveType, String sortCode) {
         List<LikeablePerson> filterByGenderList = filterByGender(likeablePeople, gender);
-        // TODO: 호감 사유로 필터링
-//        List<LikeablePerson> filterByAttractiveTypeList = filterByAttractiveType(filterByGenderList, attractiveType);
+
+        List<LikeablePerson> filterByAttractiveTypeList = filterByAttractiveType(filterByGenderList, attractiveType);
         // TODO: 정렬 필터링
 //        List<LikeablePerson> filterBySortCodeList = filterBySortCode(filterByAttractiveTypeList, sortCode);
 
 
-        return filterByGenderList;
+        return filterByAttractiveTypeList;
     }
 
     public List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender){
@@ -215,6 +216,19 @@ public class LikeablePersonService {
                 return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("M")).collect(Collectors.toList());
             default:
                 return likeablePeople;
+        }
+    }
+
+    private List<LikeablePerson> filterByAttractiveType(List<LikeablePerson> filterByGenderList, String attractiveType) {
+        switch (attractiveType) {
+            case "1":
+                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 1).collect(Collectors.toList());
+            case "2":
+                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 2).collect(Collectors.toList());
+            case "3":
+                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 3).collect(Collectors.toList());
+            default:
+                return filterByGenderList;
         }
     }
 
