@@ -195,11 +195,23 @@ public class LikeablePersonService {
         return filterByGenderList;
     }
 
-    private List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender){
+    public List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender){
+//        List<LikeablePerson> filteredList = new ArrayList<>();
         switch (gender) {
             case "W":
+
+//                for (LikeablePerson likeablePerson : likeablePeople) {
+//                    if (likeablePerson.getFromInstaMember().getGender().equals("W")) {
+//                        filteredList.add(likeablePerson);
+//                    }
+//                }
                 return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("W")).collect(Collectors.toList());
             case "M":
+//                for (LikeablePerson likeablePerson : likeablePeople) {
+//                    if (likeablePerson.getFromInstaMember().getGender().equals("M")) {
+//                        filteredList.add(likeablePerson);
+//                    }
+//                }
                 return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("M")).collect(Collectors.toList());
             default:
                 return likeablePeople;
