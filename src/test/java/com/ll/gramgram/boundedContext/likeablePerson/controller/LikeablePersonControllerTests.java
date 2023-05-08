@@ -337,8 +337,8 @@ public class LikeablePersonControllerTests {
         // THEN
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
-                .andExpect(handler().methodName("toList"))
-                .andExpect(status().is3xxRedirection())
+                .andExpect(handler().methodName("showToList"))
+                .andExpect(status().is2xxSuccessful())
         ;
     }
 

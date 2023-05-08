@@ -131,4 +131,26 @@ public class LikeablePersonController {
 
         return "usr/likeablePerson/toList";
     }
+
+    @AllArgsConstructor
+    @Getter
+    public static class ToListForm {
+        private final String gender;
+        private final String attractiveType;
+        private final String sortCode;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/toList")
+    public String showToList(@Valid ToListForm toListForm, Model model) {
+        InstaMember instaMember = rq.getMember().getInstaMember();
+        List<LikeablePerson> likeablePeople = instaMember.getToLikeablePeople();
+
+        // 필터링
+        likeablePeople = likeablePersonService.toListFilter(likeablePeople, toListForm.getGender(), toListForm.getAttractiveType(), toListForm.getSortCode());
+
+        model.addAttribute("likeablePeople", likeablePeople);
+
+        return "usr/likeablePerson/toList";
+    }
 }

@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -183,5 +184,26 @@ public class LikeablePersonService {
     }
 
 
+    public List<LikeablePerson> toListFilter(List<LikeablePerson> likeablePeople, String gender, String attractiveType, String sortCode) {
+        List<LikeablePerson> filterByGenderList = filterByGender(likeablePeople, gender);
+        // TODO: 호감 사유로 필터링
+//        List<LikeablePerson> filterByAttractiveTypeList = filterByAttractiveType(filterByGenderList, attractiveType);
+        // TODO: 정렬 필터링
+//        List<LikeablePerson> filterBySortCodeList = filterBySortCode(filterByAttractiveTypeList, sortCode);
+
+
+        return filterByGenderList;
+    }
+
+    private List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender){
+        switch (gender) {
+            case "W":
+                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("W")).collect(Collectors.toList());
+            case "M":
+                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("M")).collect(Collectors.toList());
+            default:
+                return likeablePeople;
+        }
+    }
 
 }
