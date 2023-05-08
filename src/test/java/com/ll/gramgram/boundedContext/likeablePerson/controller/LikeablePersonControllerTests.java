@@ -330,7 +330,8 @@ public class LikeablePersonControllerTests {
         ResultActions resultActions = mvc
                 .perform(post("/usr/likeablePerson/toList")
                         .with(csrf())
-                        .param("gender", "W")
+                        .param("gender", "W") //성별 필터링
+                        .param("attractiveTypeCode", "1") //호감사유 필터링
                 )
                 .andDo(print());
 

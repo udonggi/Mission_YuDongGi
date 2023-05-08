@@ -97,4 +97,23 @@ public class LikeablePersonServiceTests {
                 likeablePersonList.size()
         ).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 호감사유를 외모로 필터링하면 1개, 성격으로 필터링하면 0개가 나온다.")
+    @WithUserDetails("user4")
+    void t004() throws Exception {
+        Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
+        InstaMember instaMember = memberUser4.getInstaMember();
+        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "","외모","");
+
+        assertThat(
+                likeablePersonList.size()
+        ).isEqualTo(1);
+
+        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "","성격","");
+
+        assertThat(
+                likeablePersonList.size()
+        ).isEqualTo(0);
+    }
 }
