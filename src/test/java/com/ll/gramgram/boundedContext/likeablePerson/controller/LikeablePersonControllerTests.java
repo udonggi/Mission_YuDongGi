@@ -322,5 +322,25 @@ public class LikeablePersonControllerTests {
         assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
     }
 
+    @Test
+    @DisplayName("내가 받은 호감(toList) 페이지에서 조회로 필터링 하기 ")
+    @WithUserDetails("user4")
+    void t017() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(post("/usr/likeablePerson/toList")
+                        .with(csrf())
+                        .param("gender", "W")
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("toList"))
+                .andExpect(status().is3xxRedirection())
+        ;
+    }
+
 
 }

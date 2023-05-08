@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -76,5 +77,24 @@ public class LikeablePersonServiceTests {
         assertThat(
                 likeablePersonToBts.getModifyUnlockDate().isBefore(coolTime)
         ).isTrue();
+    }
+
+    @Test
+    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 남성으로 필터링해서 확인하면 0개, 여성으로 필터링해서 확인하면 1개가 나온다.")
+    @WithUserDetails("user4")
+    void t003() throws Exception {
+        Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
+        InstaMember instaMember = memberUser4.getInstaMember();
+        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "M","","");
+
+        assertThat(
+                likeablePersonList.size()
+        ).isEqualTo(0);
+
+        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "W","","");
+
+        assertThat(
+                likeablePersonList.size()
+        ).isEqualTo(1);
     }
 }
