@@ -185,7 +185,7 @@ public class LikeablePersonService {
     }
 
 
-    public List<LikeablePerson> toListFilter(List<LikeablePerson> likeablePeople, String gender, String attractiveType, String sortCode) {
+    public List<LikeablePerson> toListFilter(List<LikeablePerson> likeablePeople, String gender, int attractiveType, int sortCode) {
         List<LikeablePerson> filterByGenderList = filterByGender(likeablePeople, gender);
 
         List<LikeablePerson> filterByAttractiveTypeList = filterByAttractiveType(filterByGenderList, attractiveType);
@@ -219,13 +219,13 @@ public class LikeablePersonService {
         }
     }
 
-    private List<LikeablePerson> filterByAttractiveType(List<LikeablePerson> filterByGenderList, String attractiveType) {
+    private List<LikeablePerson> filterByAttractiveType(List<LikeablePerson> filterByGenderList, int attractiveType) {
         switch (attractiveType) {
-            case "1":
+            case 1:
                 return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 1).collect(Collectors.toList());
-            case "2":
+            case 2:
                 return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 2).collect(Collectors.toList());
-            case "3":
+            case 3:
                 return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 3).collect(Collectors.toList());
             default:
                 return filterByGenderList;

@@ -84,13 +84,13 @@ public class LikeablePersonServiceTests {
     void t003() throws Exception {
         Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
         InstaMember instaMember = memberUser4.getInstaMember();
-        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "M","","");
+        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "M",0,1);
 
         assertThat(
                 likeablePersonList.size()
         ).isEqualTo(0);
 
-        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "W","","");
+        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "W",0,1);
 
         assertThat(
                 likeablePersonList.size()
@@ -102,13 +102,13 @@ public class LikeablePersonServiceTests {
     void t004() throws Exception {
         Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
         InstaMember instaMember = memberUser4.getInstaMember();
-        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "","1","");
+        List<LikeablePerson> likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "ALL",1,1);
 
         assertThat(
                 likeablePersonList.size()
         ).isEqualTo(1);
 
-        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "","2","");
+        likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "ALL",2,1);
 
         assertThat(
                 likeablePersonList.size()

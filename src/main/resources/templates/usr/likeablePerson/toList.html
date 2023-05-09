@@ -10,9 +10,7 @@
   <div class="max-w-2xl w-full px-4">
     <div th:unless="${@rq.member.hasConnectedInstaMember}" th:include="usr/part/needToConnect::base"></div>
 
-
     <th:block th:if="${@rq.member.hasConnectedInstaMember}">
-
       <div th:unless="${!#lists.isEmpty(likeablePeople)}" class="text-center">
         <div><i class="fa-regular fa-face-laugh"></i> 목록이 비어있습니다. 당신이 받은 호감을 보여줍니다.</div>
       </div>
@@ -24,7 +22,7 @@
 
       <div class="card bg-base-100 shadow-xl">
         <div class="card-body">
-          <form th:action method="POST" class="flex flex-col gap-6" >
+          <form class="flex flex-col gap-6">
             <div class="form-control">
               <label class="label">
                                 <span class="label-text">
@@ -32,8 +30,9 @@
                                     성별
                                 </span>
               </label>
-              <select name="gender" class="select select-bordered w-full">
-                <option value="ALL">전체</option>
+              <select name="gender" class="select select-bordered w-full"
+                      onchange="$(this).closest('form').submit();">
+                <option value="">전체</option>
                 <option value="M">남성</option>
                 <option value="W">여성</option>
               </select>
@@ -51,8 +50,9 @@
                                     호감사유
                                 </span>
               </label>
-              <select name="attractiveTypeCode" class="select select-bordered w-full">
-                <option value="0">전체</option>
+              <select name="attractiveTypeCode" class="select select-bordered w-full"
+                      onchange="$(this).closest('form').submit();">
+                <option value="">전체</option>
                 <option value="1">외모</option>
                 <option value="2">성격</option>
                 <option value="3">능력</option>
@@ -71,7 +71,8 @@
                                     정렬
                                 </span>
               </label>
-              <select name="sortCode" class="select select-bordered w-full">
+              <select name="sortCode" class="select select-bordered w-full"
+                      onchange="$(this).closest('form').submit();">
                 <option value="1">최신순</option>
                 <option value="2">날짜순</option>
                 <option value="3">인기 많은 순</option>
@@ -85,10 +86,6 @@
                 }
               </script>
             </div>
-            <button id="btn-like-1" class="btn btn-block btn-primary gap-1">
-              <i class="fa-solid fa-heart-circle-plus"></i>
-              <span>조회</span>
-            </button>
           </form>
         </div>
       </div>
