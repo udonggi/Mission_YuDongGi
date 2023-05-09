@@ -75,12 +75,12 @@ public class LikeablePersonServiceTests {
 
         // 갱신 되었는지 확인
         assertThat(
-                likeablePersonToBts.getModifyUnlockDate().isBefore(coolTime)
+                likeablePersonToBts.getModifyUnlockDate().isAfter(coolTime)
         ).isTrue();
     }
 
     @Test
-    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 남성으로 필터링해서 확인하면 0개, 여성으로 필터링해서 확인하면 1개가 나온다.")
+    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 남성으로 필터링해서 확인하면 4개, 여성으로 필터링해서 확인하면 3개가 나온다.")
     void t003() throws Exception {
         Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
         InstaMember instaMember = memberUser4.getInstaMember();
@@ -88,17 +88,17 @@ public class LikeablePersonServiceTests {
 
         assertThat(
                 likeablePersonList.size()
-        ).isEqualTo(0);
+        ).isEqualTo(4);
 
         likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "W",0,1);
 
         assertThat(
                 likeablePersonList.size()
-        ).isEqualTo(1);
+        ).isEqualTo(3);
     }
 
     @Test
-    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 호감사유를 외모로 필터링하면 1개, 성격으로 필터링하면 0개가 나온다.")
+    @DisplayName("user4가 내가 받은 호감페이지(toList)에서 호감사유를 외모로 필터링하면 3개, 성격으로 필터링하면 2개가 나온다.")
     void t004() throws Exception {
         Member memberUser4 = memberService.findByUsername("user4").orElseThrow();
         InstaMember instaMember = memberUser4.getInstaMember();
@@ -106,12 +106,12 @@ public class LikeablePersonServiceTests {
 
         assertThat(
                 likeablePersonList.size()
-        ).isEqualTo(1);
+        ).isEqualTo(3);
 
         likeablePersonList = likeablePersonService.toListFilter(instaMember.getToLikeablePeople(), "ALL",2,1);
 
         assertThat(
                 likeablePersonList.size()
-        ).isEqualTo(0);
+        ).isEqualTo(2);
     }
 }

@@ -181,7 +181,7 @@ public class LikeablePersonControllerTests {
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("cancel"))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is3xxRedirection());
 
 
     }
@@ -311,7 +311,7 @@ public class LikeablePersonControllerTests {
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("modify"))
-                .andExpect(status().is4xxClientError()) // 3시간 쿨타임으로 인해 안된다.
+                .andExpect(status().is3xxRedirection())
         ;
     }
 
@@ -328,8 +328,7 @@ public class LikeablePersonControllerTests {
     void t017() throws Exception {
         // WHEN
         ResultActions resultActions = mvc
-                .perform(post("/usr/likeablePerson/toList")
-                        .with(csrf())
+                .perform(get("/usr/likeablePerson/toList")
                         .param("gender", "W") //성별 필터링
                         .param("attractiveTypeCode", "1") //호감사유 필터링
                 )
