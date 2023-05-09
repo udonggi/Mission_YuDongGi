@@ -1,6 +1,7 @@
 package com.ll.gramgram.boundedContext.likeablePerson.service;
 
 import com.ll.gramgram.base.appConfig.AppConfig;
+import com.ll.gramgram.base.baseEntity.BaseEntity;
 import com.ll.gramgram.base.event.EventAfterLike;
 import com.ll.gramgram.base.event.EventAfterModifyAttractiveType;
 import com.ll.gramgram.base.event.EventBeforeCancelLike;
@@ -16,8 +17,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -83,7 +83,7 @@ public class LikeablePersonService {
         if (likeablePerson.isPresent()) {
             if (likeablePerson.get().getAttractiveTypeCode() == attractiveTypeCode) {
                 return RsData.of("F-3", "같은 사유로 이미 호감상대로 등록되어 있습니다.");
-            } else if(!likeablePerson.get().isModifyUnlocked()) {
+            } else if (!likeablePerson.get().isModifyUnlocked()) {
                 return RsData.of("F-5", "호감사유를 변경할 수 있는 기간이 아닙니다.");
             } else {
                 modifyAttractionTypeCode(likeablePerson.get(), attractiveTypeCode);
@@ -112,7 +112,7 @@ public class LikeablePersonService {
         if (canCancelRsData.isFail())
             return canCancelRsData;
 
-        publisher.publishEvent(new EventBeforeCancelLike( likeablePerson));
+        publisher.publishEvent(new EventBeforeCancelLike(likeablePerson));
 
 
         // 너가 생성한 좋아요가 사라졌어.
@@ -131,7 +131,7 @@ public class LikeablePersonService {
             return RsData.of("F-2", "해당 호감상대를 삭제할 권한이 없습니다.");
         }
 
-        if(!likeablePerson.isModifyUnlocked()) {
+        if (!likeablePerson.isModifyUnlocked()) {
             return RsData.of("F-6", "호감상대를 삭제할 수 있는 기간이 아닙니다.");
         }
         return RsData.of("S-1", "호감상대를 삭제할 수 있습니다.");
@@ -189,14 +189,37 @@ public class LikeablePersonService {
         List<LikeablePerson> filterByGenderList = filterByGender(likeablePeople, gender);
 
         List<LikeablePerson> filterByAttractiveTypeList = filterByAttractiveType(filterByGenderList, attractiveType);
-        // TODO: 정렬 필터링
-//        List<LikeablePerson> filterBySortCodeList = filterBySortCode(filterByAttractiveTypeList, sortCode);
+
+        List<LikeablePerson> filterBySortCodeList = filterBySortCode(filterByAttractiveTypeList, sortCode);
 
 
-        return filterByAttractiveTypeList;
+        return filterBySortCodeList;
     }
 
-    public List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender){
+    private List<LikeablePerson> filterBySortCode(List<LikeablePerson> filterByAttractiveTypeList, int sortCode) {
+        switch (sortCode) {
+            case 2: //날짜순 , 가장 오래전에 받은 호감표시 우선 표시 (위에서부터)
+                filterByAttractiveTypeList.sort(Comparator.comparing(BaseEntity::getCreateDate));
+                return filterByAttractiveTypeList;
+            case 3:// 인기 많은 순 위에서부터
+                filterByAttractiveTypeList.sort((o1, o2) -> o2.getFromInstaMember().getToLikeablePeople().size() - o1.getFromInstaMember().getToLikeablePeople().size());
+                return filterByAttractiveTypeList;
+            case 4: //인기 적은 순 위에서부터
+                filterByAttractiveTypeList.sort(Comparator.comparingInt(o -> o.getFromInstaMember().getToLikeablePeople().size()));
+                return filterByAttractiveTypeList;
+            case 5:// 성별순, 여성에게 받은 호감표시 먼저 표시 그다음 남자
+                filterByAttractiveTypeList.sort((o1, o2) -> o2.getFromInstaMember().getGender().compareTo(o1.getFromInstaMember().getGender()));
+                return filterByAttractiveTypeList;
+            case 6:// 호감사유 순, 외모 -> 성격 -> 능력 순으로 표시
+                filterByAttractiveTypeList.sort(Comparator.comparingInt(LikeablePerson::getAttractiveTypeCode));
+                return filterByAttractiveTypeList;
+//                return filterByAttractiveTypeList.stream().sorted(Comparator.comparingInt(LikeablePerson::getAttractiveTypeCode)).collect(Collectors.toList());
+            default:
+                return filterByAttractiveTypeList;
+        }
+    }
+
+    public List<LikeablePerson> filterByGender(List<LikeablePerson> likeablePeople, String gender) {
 //        List<LikeablePerson> filteredList = new ArrayList<>();
         switch (gender) {
             case "W":
