@@ -229,30 +229,24 @@ public class LikeablePersonService {
 //                        filteredList.add(likeablePerson);
 //                    }
 //                }
-                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("W")).collect(Collectors.toList());
+                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("W")).toList();
             case "M":
 //                for (LikeablePerson likeablePerson : likeablePeople) {
 //                    if (likeablePerson.getFromInstaMember().getGender().equals("M")) {
 //                        filteredList.add(likeablePerson);
 //                    }
 //                }
-                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("M")).collect(Collectors.toList());
+                return likeablePeople.stream().filter(likeablePerson -> likeablePerson.getFromInstaMember().getGender().equals("M")).toList();
             default:
                 return likeablePeople;
         }
     }
 
     private List<LikeablePerson> filterByAttractiveType(List<LikeablePerson> filterByGenderList, int attractiveType) {
-        switch (attractiveType) {
-            case 1:
-                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 1).collect(Collectors.toList());
-            case 2:
-                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 2).collect(Collectors.toList());
-            case 3:
-                return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == 3).collect(Collectors.toList());
-            default:
-                return filterByGenderList;
+        if (attractiveType == 0) {
+            return filterByGenderList;
         }
+        return filterByGenderList.stream().filter(likeablePerson -> likeablePerson.getAttractiveTypeCode() == attractiveType).toList();
     }
 
 }
