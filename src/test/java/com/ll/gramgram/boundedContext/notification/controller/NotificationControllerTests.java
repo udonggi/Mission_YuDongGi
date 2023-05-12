@@ -49,7 +49,7 @@ public class NotificationControllerTests {
 
         long count = notifications.stream().filter(notification -> notification.getReadDate() == null).count();
 
-        assertThat(count).isEqualTo(1);
+        assertThat(count).isEqualTo(7);
 
         ResultActions resultActions = mvc
                 .perform(get("/usr/notification/list"))

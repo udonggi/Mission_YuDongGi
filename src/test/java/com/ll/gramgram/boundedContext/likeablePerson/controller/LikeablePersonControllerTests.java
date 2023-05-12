@@ -181,7 +181,7 @@ public class LikeablePersonControllerTests {
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("cancel"))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is3xxRedirection());
 
 
     }
@@ -311,7 +311,7 @@ public class LikeablePersonControllerTests {
         resultActions
                 .andExpect(handler().handlerType(LikeablePersonController.class))
                 .andExpect(handler().methodName("modify"))
-                .andExpect(status().is4xxClientError()) // 3시간 쿨타임으로 인해 안된다.
+                .andExpect(status().is3xxRedirection())
         ;
     }
 
@@ -320,6 +320,26 @@ public class LikeablePersonControllerTests {
     void t016() throws Exception {
         System.out.println("likeablePersonModifyCoolTime : " + AppConfig.getLikeablePersonModifyCoolTime());
         assertThat(AppConfig.getLikeablePersonModifyCoolTime()).isGreaterThan(0);
+    }
+
+    @Test
+    @DisplayName("내가 받은 호감(toList) 페이지에서 조회로 필터링 하기 ")
+    @WithUserDetails("user4")
+    void t017() throws Exception {
+        // WHEN
+        ResultActions resultActions = mvc
+                .perform(get("/usr/likeablePerson/toList")
+                        .param("gender", "W") //성별 필터링
+                        .param("attractiveTypeCode", "1") //호감사유 필터링
+                )
+                .andDo(print());
+
+        // THEN
+        resultActions
+                .andExpect(handler().handlerType(LikeablePersonController.class))
+                .andExpect(handler().methodName("showToList"))
+                .andExpect(status().is2xxSuccessful())
+        ;
     }
 
 

@@ -21,7 +21,7 @@ import java.time.temporal.ChronoUnit;
 @NoArgsConstructor
 @SuperBuilder
 @ToString(callSuper = true)
-public class LikeablePerson extends BaseEntity {
+public class LikeablePerson extends BaseEntity implements Comparable<LikeablePerson> {
 
     private LocalDateTime modifyUnlockDate;
 
@@ -77,5 +77,10 @@ public class LikeablePerson extends BaseEntity {
 
     public String getJdenticon() {
         return Ut.hash.sha256(fromInstaMember.getId() + "_likes_" + toInstaMember.getId());
+    }
+
+    @Override
+    public int compareTo(LikeablePerson o) {
+        return 0;
     }
 }
